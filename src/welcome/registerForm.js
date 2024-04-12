@@ -6,6 +6,7 @@ import { Calendar } from 'primereact/calendar';
 import { InputNumber } from 'primereact/inputnumber'
 import { Dialog } from 'primereact/dialog';
 import Subscriptions from "../subscriptions";
+import {RegisterMember} from "../databaseAPI";
 
 const RegisterForm = () => {
 
@@ -31,6 +32,21 @@ const RegisterForm = () => {
             weight !== null &&
             subscription_id !== null
         )
+    }
+
+    const registerUser = async () => {
+        const memberData = {
+            first_name: first_name,
+            last_name: last_name,
+            email: email,
+            date_of_birth: date_of_birth,
+            username: username,
+            password: password,
+            height: height,
+            weight: weight,
+            subscription_id: subscription_id,
+        }
+        await RegisterMember(memberData);
     }
 
     return (
@@ -95,7 +111,7 @@ const RegisterForm = () => {
                 </div>
                 <div className='col-12 flex justify-content-center mt-2'>
                     <Button className='border-round-2xl border-primary text-900 font-bold' label="Register" outlined
-                            disabled={formComplete()}/>
+                            disabled={formComplete()} onClick={() => registerUser()}/>
                 </div>
             </div>
         </>
