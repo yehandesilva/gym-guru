@@ -60,9 +60,10 @@ def get_subscription_models():
         subscription_models = cursor.fetchall()
         print(f"[QUERY] Subscription models: {subscription_models}")
 
-        # Return tuples as JSON format to front-end (convert Decimal type to decimal numbers as well)
+        # Convert data into JSON format (str) (to convert Decimal type to decimal numbers)
         json_data = simplejson.dumps(subscription_models, use_decimal=True)
-        print(f"[LOG] Subscription model data converted into JSON format: {json_data}")
+        print(f"[LOG] Subscription model data converted to JSON str: {json_data}")
+        # Return Response with JSON data
         return jsonify(json_data)
 
     except (PostgresError, Exception) as queryErr:
