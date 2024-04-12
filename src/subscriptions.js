@@ -8,7 +8,6 @@ function Subscriptions({subscription_id, set_subscription_id}) {
     const [subscriptionModels, setSubscriptionModels] = useState([]);
 
     useEffect(() => {
-        //TODO remove test subscriptions
         GetSubscriptionModels().then((data) => {
             if (data && data.length > 0) {
                 set_subscription_id(data[0].subscriptionId);

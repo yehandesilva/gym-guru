@@ -8,8 +8,7 @@ export const GetSubscriptionModels = async() => {
         };
         const response = await fetch(`${rte}subscription_models`, requestOptionsHead);
         if (response.ok) {
-            console.log(await response.json())
-            return await response.json();
+            return JSON.parse(await response.json());
         }
         return null;
     } catch (e) {
