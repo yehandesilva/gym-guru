@@ -66,12 +66,12 @@ and then creating a new entry for them in the Members table.
 """
 @app.route('/register_member', methods=['POST'])
 def register_member():
-    print("[LOG] Received request to register member")
     cursor = db_conn.cursor()
     try:
         # Get next account_id value (to be associated with new account being created)
         member = json.loads(request.data)
         account_type = "member"
+        print(f"[LOG] Received request to register member: {member}")
 
         # Insert new tuple into Account table, and return its account_id (PK)
         cursor.execute("INSERT INTO account (email, password, type) VALUES (%s, %s, %s) RETURNING account_id",
