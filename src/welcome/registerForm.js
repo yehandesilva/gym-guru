@@ -7,6 +7,7 @@ import { InputNumber } from 'primereact/inputnumber'
 import { Dialog } from 'primereact/dialog';
 import Subscriptions from "../subscriptions";
 import {RegisterMember} from "../databaseAPI";
+import {Password} from "primereact/password";
 
 const RegisterForm = () => {
 
@@ -101,7 +102,7 @@ const RegisterForm = () => {
                 </div>
                 <div className='col-6 mt-2 flex justify-content-center'>
                     <FloatLabel>
-                        <InputText value={password} onChange={(e) => set_password(e.target.value)}/>
+                        <Password value={password} onChange={(e) => set_password(e.target.value)}/>
                         <label htmlFor="password">Password</label>
                     </FloatLabel>
                 </div>
