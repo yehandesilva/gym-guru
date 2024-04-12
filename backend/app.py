@@ -9,6 +9,7 @@ from flask import jsonify
 from flask import request
 from flask import Response
 import simplejson as json
+from flask_cors import CORS, cross_origin
 import psycopg2
 from psycopg2 import Error as PostgresError
 from datetime import date
@@ -16,6 +17,8 @@ from dateutil.relativedelta import relativedelta
 
 # Create Flask app
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 # Fields for accessing Gym Guru database
 database_name = "GymGuru"
@@ -44,6 +47,7 @@ Returns info for all the different subscription models
 available.
 """
 @app.route('/subscription_models', methods=['GET'])
+@cross_origin()
 def get_subscription_models():
     print("[LOG] Received request to get subscription models")
     cursor = db_conn.cursor()
