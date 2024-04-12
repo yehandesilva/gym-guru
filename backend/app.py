@@ -13,6 +13,7 @@ import simplejson as simplejson
 from flask_cors import CORS, cross_origin
 import psycopg2
 from psycopg2 import Error as PostgresError
+from psycopg2.extras import RealDictCursor
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
@@ -51,18 +52,17 @@ available.
 @cross_origin()
 def get_subscription_models():
     print("[LOG] Received request to get subscription models")
-    cursor = db_conn.cursor()
+    # Use RealDictCursor to return data as dictionary format
+    cursor = db_conn.cursor(cursor_factory=RealDictCursor)
     try:
         # Get info on all subscription models
         cursor.execute("SELECT * FROM subscription")
         subscription_models = cursor.fetchall()
         print(f"[QUERY] Subscription models: {subscription_models}")
-        # Return tuples as JSON to front-end (convert Decimal type to decimal numbers as well)
+        # Return tuples as JSON format to front-end (convert Decimal type to decimal numbers as well)
         json_data = simplejson.dumps(subscription_models, use_decimal=True)
-        subscription_response = app.response_class(response=json_data,
-                                      status=200,
-                                      mimetype='application/json')
-        return subscription_response
+        print(f"[LOG] Subscription model data converted into JSON format: {json_data}")
+        return jsonify(json_data, use_decimal=True)
     except (PostgresError, Exception) as queryErr:
         print(f"[QUERY ERROR] {queryErr}")
         # Return response as INTERNAL SERVER ERROR
