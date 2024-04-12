@@ -1,4 +1,4 @@
-const rte = "http://localhost:5000/";
+const rte = "http://localhost:4000/";
 
 export const GetSubscriptionModels = async() => {
     try {
@@ -8,6 +8,7 @@ export const GetSubscriptionModels = async() => {
         };
         const response = await fetch(`${rte}subscription_models`, requestOptionsHead);
         if (response.ok) {
+            console.log(await response.json())
             return await response.json();
         }
         return null;
