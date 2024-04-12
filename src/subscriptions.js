@@ -9,30 +9,12 @@ function Subscriptions({subscription_id, set_subscription_id}) {
 
     useEffect(() => {
         //TODO remove test subscriptions
-        /*GetSubscriptionModels().then((data) => {
-            if (data.length > 0) {
+        GetSubscriptionModels().then((data) => {
+            if (data && data.length > 0) {
                 set_subscription_id(data[0].subscriptionId);
             }
             setSubscriptionModels(data);
-        });*/
-        const testSubscriptions = [
-            {
-                subscriptionId: 1,
-                amount: 13.99,
-                name: "Fit Flex",
-                type: "Monthly"
-            },
-            {
-                subscriptionId: 2,
-                amount: 67.99,
-                name: "Fit Plus",
-                type: "Annual"
-            },
-        ]
-        if (testSubscriptions.length > 0) {
-            set_subscription_id(testSubscriptions[0].subscriptionId);
-        }
-        setSubscriptionModels(testSubscriptions);
+        });
     }, []);
 
     const gridItem = (subscriptionModel) => {
