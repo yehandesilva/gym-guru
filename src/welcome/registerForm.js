@@ -2,13 +2,14 @@ import {InputText} from "primereact/inputtext";
 import {Button} from "primereact/button";
 import {useState} from "react";
 import {FloatLabel} from "primereact/floatlabel";
+import { Calendar } from 'primereact/calendar';
 
 const RegisterForm = () => {
 
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
-    const [dateOfBirth, setDateOfBirth] = useState("");
+    const [dateOfBirth, setDateOfBirth] = useState(null);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -33,19 +34,19 @@ const RegisterForm = () => {
             <div className='col-6 flex justify-content-center'>
                 <FloatLabel>
                     <InputText value={lastName} onChange={(e) => setLastName(e.target.value)}/>
-                    <label htmlFor="firstName">Last Name</label>
+                    <label htmlFor="lastName">Last Name</label>
                 </FloatLabel>
             </div>
             <div className='col-6 mt-2 flex justify-content-center'>
                 <FloatLabel>
                     <InputText value={email} onChange={(e) => setEmail(e.target.value)}/>
-                    <label htmlFor="firstName">Email</label>
+                    <label htmlFor="email">Email</label>
                 </FloatLabel>
             </div>
             <div className='col-6 mt-2 flex justify-content-center'>
                 <FloatLabel>
-                    <InputText value={dateOfBirth} onChange={(e) => setDateOfBirth(e.target.value)}/>
-                    <label htmlFor="firstName">Date of Birth</label>
+                    <Calendar value={dateOfBirth} onChange={(e) => setDateOfBirth(e.value)} showButtonBar />
+                    <label htmlFor="dateOfBirth">Date of Birth</label>
                 </FloatLabel>
             </div>
             <div className='col-6 mt-2 flex justify-content-center'>
