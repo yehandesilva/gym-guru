@@ -28,3 +28,8 @@ CREATE TABLE IF NOT EXISTS member (
 	FOREIGN KEY (subscription_id)
 		REFERENCES subscription (subscription_id)
 );
+
+
+*/ Sample insertions */
+INSERT INTO subscription (amount, name, type) VALUES (30.00, 'Fit Flex', 'monthly');
+INSERT INTO subscription (amount, name, type) VALUES (200.00, 'Fit Elite', 'annual');
