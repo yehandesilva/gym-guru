@@ -25,7 +25,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 # Fields for accessing Gym Guru database
 database_name = "GymGuru"
 user = "postgres"
-password = "postgres"
+password = "admin"
 host = "localhost"
 port = 5432
 

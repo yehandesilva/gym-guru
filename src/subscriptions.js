@@ -10,7 +10,7 @@ function Subscriptions({subscription_id, set_subscription_id}) {
     useEffect(() => {
         GetSubscriptionModels().then((data) => {
             if (data && data.length > 0) {
-                set_subscription_id(data[0].subscriptionId);
+                set_subscription_id(data[0].subscription_id);
             }
             setSubscriptionModels(data);
         });
@@ -19,11 +19,11 @@ function Subscriptions({subscription_id, set_subscription_id}) {
     const gridItem = (subscriptionModel) => {
         const handleItemClick = () => {
             // Handle item click here, for example, set the selected item in state
-            set_subscription_id(subscriptionModel.subscriptionId);
+            set_subscription_id(subscriptionModel.subscription_id);
         };
         return (
-            <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-2 w-6" key={subscriptionModel.subscriptionId} onClick={handleItemClick}>
-                <div className={`${(subscription_id === subscriptionModel.subscriptionId)? " p-4 border-2 border-primary":"p-4 border-1 surface-border surface-card border-round"}`}>
+            <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-2 w-6" key={subscriptionModel.subscription_id} onClick={handleItemClick}>
+                <div className={`${(subscription_id === subscriptionModel.subscription_id)? " p-4 border-2 border-primary":"p-4 border-1 surface-border surface-card border-round"}`}>
                     <div className="flex flex-wrap align-items-center justify-content-between gap-2">
                         <div className="flex align-items-center gap-2">
                             <i className="pi pi-tag"></i>
