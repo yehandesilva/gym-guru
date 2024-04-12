@@ -51,6 +51,7 @@ def get_subscription_models():
 Registers a new member by first creating a new account for them,
 and then creating a new entry for them in the Members table.
 """
+@app.route('/register_member', methods=['POST'])
 def register_member():
     cursor = db_conn.cursor()
     try:
@@ -74,6 +75,7 @@ def register_member():
 
     except (PostgresError, Exception) as err:
         print(f"[QUERY ERROR] {err}")
+
 
 # Main method
 if __name__ == '__main__':
