@@ -13,3 +13,18 @@ CREATE TABLE IF NOT EXISTS account (
     password VARCHAR(50) NOT NULL UNIQUE,
     type VARCHAR(20) NOT NULL
 );
+
+/* Create table to store info about members */
+CREATE TABLE IF NOT EXISTS member (
+	member_id INT PRIMARY KEY,
+    first_name VARCHAR(20) NOT NULL,
+    last_name VARCHAR(20) NOT NULL,
+	age INT NOT NULL,
+	date_of_birth DATE NOT NULL,
+	height NUMERIC(5, 2) NOT NULL,
+	weight NUMERIC(5, 2) NOT NULL,
+	next_pay_date DATE NOT NULL,
+	subscription_id INT NOT NULL,
+	FOREIGN KEY (subscription_id)
+		REFERENCES subscription (subscription_id)
+);

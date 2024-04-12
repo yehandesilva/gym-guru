@@ -7,20 +7,31 @@ Backend server for Gym Guru.
 from flask import Flask
 from flask import jsonify
 from flask import request
+from flask import Response
+import json
 import psycopg2
 from psycopg2 import Error as PostgresError
+from datetime import date
+from dateutil.relativedelta import relativedelta
 
 # Create Flask app
 app = Flask(__name__)
 
+# Fields for accessing Gym Guru database
+database_name = "GymGuru"
+user = "postgres"
+password = "postgres"
+host = "localhost"
+port = 5432
+
 # Establish connection to the database
 try:
-    # NOTE: Change user, password, and port based on what port number based on your PostgreSQL configurations
-    db_conn = psycopg2.connect(database='GymGuru',
-                               user='postgres',
-                               password='postgres',
-                               host='localhost',
-                               port=5432)
+    # NOTE: Change database name, user, password, and port (above) based on your PostgreSQL configurations
+    db_conn = psycopg2.connect(database=database_name,
+                               user=user,
+                               password=password,
+                               host=host,
+                               port=port)
     print("[CONNECTION] SUCCESS: Backend server established connection to the Gym Guru database")
 except (PostgresError, Exception) as connectionErr:
     print("[CONNECTION] ERROR: Connection to the Gym Guru database failed: " + connectionErr)
@@ -32,8 +43,9 @@ except (PostgresError, Exception) as connectionErr:
 Returns info for all the different subscription models
 available.
 """
-@app.route('/get_subscription_models', methods=['GET'])
+@app.route('/subscription_models', methods=['GET'])
 def get_subscription_models():
+    print("[LOG] Received request to get subscription models")
     cursor = db_conn.cursor()
     try:
         # Get info on all subscription models
@@ -44,6 +56,8 @@ def get_subscription_models():
         return jsonify(subscription_models)
     except (PostgresError, Exception) as queryErr:
         print(f"[QUERY ERROR] {queryErr}")
+        # Return response as INTERNAL SERVER ERROR
+        return Response(status=500)
 
 
 """
@@ -52,28 +66,49 @@ and then creating a new entry for them in the Members table.
 """
 @app.route('/register_member', methods=['POST'])
 def register_member():
+    print("[LOG] Received request to register member")
     cursor = db_conn.cursor()
     try:
         # Get next account_id value (to be associated with new account being created)
-        #TODO: Replace these with request data
-        email = "test3@gmail.com"
-        password = "testpassword3"
+        member = json.loads(request.data)
         account_type = "member"
-        # member_data = json.loads(request.data)
 
         # Insert new tuple into Account table, and return its account_id (PK)
         cursor.execute("INSERT INTO account (email, password, type) VALUES (%s, %s, %s) RETURNING account_id",
-                       (email, password, account_type))
+                       (member['email'], password, account_type))
         account_id = int(cursor.fetchone()[0])
-        print(f"[QUERY/LOG]: New account ID: {account_id}")
+        print(f"[LOG]: New account ID: {account_id}")
         # Commit changes
         db_conn.commit()
 
-        # Insert new tuple into Member table (using account_id as member_id)
-        #TODO: Finish insertion into Member table
+        # Compute next pay date for member (based on selected subscription)
+        cursor.execute("SELECT type FROM subscription WHERE subscription_id = %s", (member['subscription_id'],))
+        subscription_type = str(cursor.fetchone()[0])
 
+        current_date = date.today()
+        if subscription_type.lower() == 'monthly':
+            # Add a month to the current date
+            billing_date = str(current_date + relativedelta(months=1))
+        elif subscription_type.lower() == 'annual':
+            # Add a year to the current date
+            billing_date = str(current_date + relativedelta(years=1))
+        else:
+            print(f"[ERROR] Unknown subscription type returned from server: {subscription_type}")
+            billing_date = current_date
+
+        # Insert new tuple into Member table (using account_id as member_id)
+        cursor.execute("INSERT INTO member (member_id, first_name, last_name, age, date_of_birth, height, weight, next_pay_date, subscription_id) "
+                       "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                       (account_id, member['first_name'], member['last_name'], member['age'], member['date_of_birth'],
+                        member['street_name'], member['height'], member['weight'], billing_date, member['subscription_id']))
+        # Commit changes
+        db_conn.commit()
+        # Return response as OK
+        return Response(status=200)
     except (PostgresError, Exception) as queryErr:
         print(f"[QUERY ERROR] {queryErr}")
+        # Return response as INTERNAL SERVER ERROR
+        return Response(status=500)
 
 
 # Main method
