@@ -8,7 +8,8 @@ from flask import Flask
 from flask import jsonify
 from flask import request
 from flask import Response
-import simplejson as json
+from flask import json
+import simplejson as simplejson
 from flask_cors import CORS, cross_origin
 import psycopg2
 from psycopg2 import Error as PostgresError
@@ -56,9 +57,9 @@ def get_subscription_models():
         cursor.execute("SELECT * FROM subscription")
         subscription_models = cursor.fetchall()
         print(f"[QUERY] Subscription models: {subscription_models}")
-        # Return tuples as JSON to front-end
-        json_data = json.dumps(subscription_models, use_decimal=True)
-        subscription_response = app.response_class(response=json.dumps(json_data),
+        # Return tuples as JSON to front-end (convert Decimal type to decimal numbers as well)
+        json_data = simplejson.dumps(subscription_models, use_decimal=True)
+        subscription_response = app.response_class(response=json_data,
                                       status=200,
                                       mimetype='application/json')
         return subscription_response
