@@ -43,8 +43,8 @@ def get_subscription_models():
         print(f"[QUERY] Subscription models: {subscription_models}")
         # Return all subscription models as JSON to front-end
         return jsonify(subscription_models)
-    except (PostgresError, Exception) as err:
-        print(f"[QUERY ERROR] {err}")
+    except (PostgresError, Exception) as queryErr:
+        print(f"[QUERY ERROR] {queryErr}")
 
 
 """
@@ -66,15 +66,15 @@ def register_member():
         cursor.execute("INSERT INTO account (email, password, type) VALUES (%s, %s, %s) RETURNING account_id",
                        (email, password, account_type))
         account_id = int(cursor.fetchone()[0])
-        print(f"[LOG]: New account ID: {account_id}")
+        print(f"[QUERY/LOG]: New account ID: {account_id}")
         # Commit changes
         db_conn.commit()
 
         # Insert new tuple into Member table (using account_id as member_id)
         #TODO: Finish insertion into Member table
 
-    except (PostgresError, Exception) as err:
-        print(f"[QUERY ERROR] {err}")
+    except (PostgresError, Exception) as queryErr:
+        print(f"[QUERY ERROR] {queryErr}")
 
 
 # Main method
