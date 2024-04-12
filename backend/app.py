@@ -80,7 +80,7 @@ and then creating a new entry for them in the Members table.
 def register_member():
     cursor = db_conn.cursor()
     try:
-        # Get next account_id value (to be associated with new account being created)
+        # Get JSON data from received request
         member = json.loads(request.data)
         account_type = "member"
         print(f"[LOG] Received request to register member: {member}")
@@ -106,7 +106,7 @@ def register_member():
             billing_date = str(current_date + relativedelta(years=1))
         else:
             print(f"[ERROR] Unknown subscription type returned from server: {subscription_type}")
-            billing_date = current_date
+            return Response(status=500)
 
         # Insert new tuple into Member table (using account_id as member_id)
         cursor.execute("INSERT INTO member (member_id, first_name, last_name, email, date_of_birth, height, weight, next_pay_date, subscription_id) "
