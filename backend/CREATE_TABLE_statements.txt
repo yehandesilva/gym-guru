@@ -31,5 +31,5 @@ CREATE TABLE IF NOT EXISTS member (
 
 
 */ Sample insertions */
-INSERT INTO subscription (amount, name, type) VALUES (30.00, 'Fit Flex', 'monthly');
-INSERT INTO subscription (amount, name, type) VALUES (200.00, 'Fit Elite', 'annual');
+INSERT INTO subscription (amount, name, type) VALUES (30.00, 'Fit Flex', 'Monthly');
+INSERT INTO subscription (amount, name, type) VALUES (200.00, 'Fit Elite', 'Annual');
