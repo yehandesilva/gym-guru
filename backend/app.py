@@ -8,7 +8,7 @@ from flask import Flask
 from flask import jsonify
 from flask import request
 from flask import Response
-import json
+import simplejson as json
 import psycopg2
 from psycopg2 import Error as PostgresError
 from datetime import date
@@ -53,7 +53,11 @@ def get_subscription_models():
         subscription_models = cursor.fetchall()
         print(f"[QUERY] Subscription models: {subscription_models}")
         # Return tuples as JSON to front-end
-        return jsonify(subscription_models)
+        json_data = json.dumps(subscription_models, use_decimal=True)
+        subscription_response = app.response_class(response=json.dumps(json_data),
+                                      status=200,
+                                      mimetype='application/json')
+        return subscription_response
     except (PostgresError, Exception) as queryErr:
         print(f"[QUERY ERROR] {queryErr}")
         # Return response as INTERNAL SERVER ERROR
@@ -114,4 +118,4 @@ def register_member():
 # Main method
 if __name__ == '__main__':
     # Run backend server on port 5000 (React app is running on 3000)
-    app.run(port=5000, debug=True, use_reloader=False)
+    app.run(port=4000, debug=True, use_reloader=False)
