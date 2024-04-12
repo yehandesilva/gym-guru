@@ -1,25 +1,32 @@
+import {useState} from "react";
 import {InputText} from "primereact/inputtext";
 import {Button} from "primereact/button";
-import {useState} from "react";
 import {FloatLabel} from "primereact/floatlabel";
 import { Calendar } from 'primereact/calendar';
+import { InputNumber } from 'primereact/inputnumber'
+import { Dialog } from 'primereact/dialog';
 
 const RegisterForm = () => {
 
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [email, setEmail] = useState("");
-    const [dateOfBirth, setDateOfBirth] = useState(null);
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+    const [first_name, set_first_name] = useState("");
+    const [last_name, set_last_name] = useState("");
+    const [email, set_email] = useState("");
+    const [date_of_birth, set_date_of_birth] = useState(null);
+    const [username, set_username] = useState("");
+    const [password, set_password] = useState("");
+    const [height, set_height] = useState();
+    const [weight, set_weight] = useState();
+    const [planDialogVisible, setPlanDialogVisible] = useState(false);
 
     const formComplete = () => {
-        return !(firstName !== "" &&
-            lastName !== "" &&
+        return !(first_name !== "" &&
+            last_name !== "" &&
             email !== "" &&
-            dateOfBirth !== "" &&
+            date_of_birth !== "" &&
             username !== "" &&
-            password !== ""
+            password !== "" &&
+            height !== null &&
+            weight !== null
         )
     }
 
@@ -27,45 +34,58 @@ const RegisterForm = () => {
         <div className='grid mt-4 w-5'>
             <div className='col-6 flex justify-content-center'>
                 <FloatLabel>
-                    <InputText value={firstName} onChange={(e) => setFirstName(e.target.value)}/>
+                    <InputText value={first_name} onChange={(e) => set_first_name(e.target.value)}/>
                     <label htmlFor="firstName">First Name</label>
                 </FloatLabel>
             </div>
             <div className='col-6 flex justify-content-center'>
                 <FloatLabel>
-                    <InputText value={lastName} onChange={(e) => setLastName(e.target.value)}/>
+                    <InputText value={last_name} onChange={(e) => set_last_name(e.target.value)}/>
                     <label htmlFor="lastName">Last Name</label>
                 </FloatLabel>
             </div>
             <div className='col-6 mt-2 flex justify-content-center'>
                 <FloatLabel>
-                    <InputText value={email} onChange={(e) => setEmail(e.target.value)}/>
+                    <InputText value={email} onChange={(e) => set_email(e.target.value)}/>
                     <label htmlFor="email">Email</label>
                 </FloatLabel>
             </div>
             <div className='col-6 mt-2 flex justify-content-center'>
                 <FloatLabel>
-                    <Calendar value={dateOfBirth} onChange={(e) => setDateOfBirth(e.value)} showButtonBar />
+                    <Calendar value={date_of_birth} onChange={(e) => set_date_of_birth(e.value)} showButtonBar/>
                     <label htmlFor="dateOfBirth">Date of Birth</label>
                 </FloatLabel>
             </div>
             <div className='col-6 mt-2 flex justify-content-center'>
                 <FloatLabel>
-                    <InputText value={username} onChange={(e) => setUsername(e.target.value)}/>
+                    <InputNumber value={height} onValueChange={(e) => set_height(e.value)} min={0} max={999.99} minFractionDigits={2} maxFractionDigits={2} suffix=" cm"/>
+                    <label htmlFor="height">Height</label>
+                </FloatLabel>
+            </div>
+            <div className='col-6 mt-2 flex justify-content-center'>
+                <FloatLabel>
+                    <InputNumber value={weight} onValueChange={(e) => set_weight(e.value)} min={0} max={999.99} minFractionDigits={2} maxFractionDigits={2} suffix=" kg"/>
+                    <label htmlFor="weight">Weight</label>
+                </FloatLabel>
+            </div>
+            <div className='col-6 mt-2 flex justify-content-center'>
+                <FloatLabel>
+                    <InputText value={username} onChange={(e) => set_username(e.target.value)}/>
                     <label htmlFor="username">Username</label>
                 </FloatLabel>
             </div>
             <div className='col-6 mt-2 flex justify-content-center'>
                 <FloatLabel>
-                    <InputText value={password} onChange={(e) => setPassword(e.target.value)}/>
+                    <InputText value={password} onChange={(e) => set_password(e.target.value)}/>
                     <label htmlFor="password">Password</label>
                 </FloatLabel>
             </div>
             <div className='col-12 flex justify-content-center mt-2'>
-                <Button className='border-round-2xl border-primary text-900 font-bold' label="Select a Plan" outlined/>
+                <Button className='border-round-2xl border-primary text-900 font-bold' label="Select a Plan" outlined onClick={() => setPlanDialogVisible(true)}/>
             </div>
             <div className='col-12 flex justify-content-center mt-2'>
-                <Button className='border-round-2xl border-primary text-900 font-bold' label="Register" outlined disabled={formComplete()}/>
+                <Button className='border-round-2xl border-primary text-900 font-bold' label="Register" outlined
+                        disabled={formComplete()}/>
             </div>
         </div>
     )
