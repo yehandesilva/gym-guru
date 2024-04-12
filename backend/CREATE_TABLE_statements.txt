@@ -6,3 +6,10 @@ CREATE TABLE IF NOT EXISTS subscription (
     type VARCHAR(20) NOT NULL
 );
 
+/* Create table to store account information */
+CREATE TABLE IF NOT EXISTS account (
+	account_id SERIAL PRIMARY KEY,
+    email VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(50) NOT NULL UNIQUE,
+    type VARCHAR(20) NOT NULL
+);
