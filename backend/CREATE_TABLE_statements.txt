@@ -30,6 +30,6 @@ CREATE TABLE IF NOT EXISTS member (
 );
 
 
-*/ Sample insertions */
+/* Sample insertions */
 INSERT INTO subscription (amount, name, type) VALUES (30.00, 'Fit Flex', 'Monthly');
 INSERT INTO subscription (amount, name, type) VALUES (200.00, 'Fit Elite', 'Annual');
