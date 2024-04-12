@@ -22,8 +22,8 @@ try:
                                host='localhost',
                                port=5432)
     print("[CONNECTION] SUCCESS: Backend server established connection to the Gym Guru database")
-except (PostgresError, Exception) as err:
-    print("[CONNECTION] ERROR: Connection to the Gym Guru database failed: " + err)
+except (PostgresError, Exception) as connectionErr:
+    print("[CONNECTION] ERROR: Connection to the Gym Guru database failed: " + connectionErr)
     exit()
 
 # FUNCTIONS FOR PERFORMING SQL QUERIES
@@ -32,16 +32,15 @@ except (PostgresError, Exception) as err:
 Returns info for all the different subscription models
 available.
 """
-
-
 @app.route('/get_subscription_models', methods=['GET'])
 def get_subscription_models():
     cursor = db_conn.cursor()
     try:
+        # Get info on all subscription models
         cursor.execute("SELECT * FROM subscription")
         subscription_models = cursor.fetchall()
         print(f"[QUERY] Subscription models: {subscription_models}")
-        # Return all subscription models as JSON to front-end
+        # Return tuples as JSON to front-end
         return jsonify(subscription_models)
     except (PostgresError, Exception) as queryErr:
         print(f"[QUERY ERROR] {queryErr}")
