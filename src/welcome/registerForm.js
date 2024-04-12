@@ -18,7 +18,7 @@ const RegisterForm = () => {
     const [height, set_height] = useState();
     const [weight, set_weight] = useState();
     const [planDialogVisible, setPlanDialogVisible] = useState(false);
-    const [selectedSubscriptionModel, setSelectedSubscriptionModel] = useState();
+    const [subscription_id, set_subscription_id] = useState();
 
     const formComplete = () => {
         return !(first_name !== "" &&
@@ -28,14 +28,15 @@ const RegisterForm = () => {
             username !== "" &&
             password !== "" &&
             height !== null &&
-            weight !== null
+            weight !== null &&
+            subscription_id !== null
         )
     }
 
     return (
         <>
             <Dialog header="Subscriptions" visible={planDialogVisible} style={{ width: '50vw' }}  onHide={() => setPlanDialogVisible(false)} closable={true}>
-                <Subscriptions selectedSubscriptionModel={selectedSubscriptionModel} setSelectedSubscriptionModel={setSelectedSubscriptionModel}/>
+                <Subscriptions subscription_id={subscription_id} set_subscription_id={set_subscription_id}/>
             </Dialog>
             <div className='grid mt-4 w-5'>
                 <div className='col-6 flex justify-content-center'>

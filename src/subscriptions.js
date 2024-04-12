@@ -1,43 +1,48 @@
 import {useEffect, useState} from "react";
 import {GetSubscriptionModels} from "./databaseAPI";
-import { Rating } from 'primereact/rating';
 import { Tag } from 'primereact/tag';
-import { Button } from 'primereact/button';
 import { DataView } from 'primereact/dataview';
 
-function Subscriptions({selectedSubscriptionModel, setSelectedSubscriptionModel}) {
+function Subscriptions({subscription_id, set_subscription_id}) {
 
     const [subscriptionModels, setSubscriptionModels] = useState([]);
 
     useEffect(() => {
         //TODO remove test subscriptions
-        //GetSubscriptionModels().then((data) => setSubscriptionModels(data));
+        /*GetSubscriptionModels().then((data) => {
+            if (data.length > 0) {
+                set_subscription_id(data[0].subscriptionId);
+            }
+            setSubscriptionModels(data);
+        });*/
         const testSubscriptions = [
             {
                 subscriptionId: 1,
                 amount: 13.99,
-                name: "Fun time",
+                name: "Fit Flex",
                 type: "Monthly"
             },
             {
                 subscriptionId: 2,
                 amount: 67.99,
-                name: "Really Fun time",
+                name: "Fit Plus",
                 type: "Annual"
             },
         ]
+        if (testSubscriptions.length > 0) {
+            set_subscription_id(testSubscriptions[0].subscriptionId);
+        }
         setSubscriptionModels(testSubscriptions);
-        setSelectedSubscriptionModel(testSubscriptions[0]);
     }, []);
 
     const gridItem = (subscriptionModel) => {
         const handleItemClick = () => {
             // Handle item click here, for example, set the selected item in state
-            setSelectedSubscriptionModel(subscriptionModel);
+            set_subscription_id(subscriptionModel.subscriptionId);
         };
         return (
             <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-2 w-6" key={subscriptionModel.subscriptionId} onClick={handleItemClick}>
-                <div className={`${(selectedSubscriptionModel.subscriptionId === subscriptionModel.subscriptionId)? " p-4 border-2 border-primary":"p-4 border-1 surface-border surface-card border-round"}`}>
+                <div className={`${(subscription_id === subscriptionModel.subscriptionId)? " p-4 border-2 border-primary":"p-4 border-1 surface-border surface-card border-round"}`}>
                     <div className="flex flex-wrap align-items-center justify-content-between gap-2">
                         <div className="flex align-items-center gap-2">
                             <i className="pi pi-tag"></i>
