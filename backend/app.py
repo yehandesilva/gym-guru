@@ -4,11 +4,7 @@ Backend server for Gym Guru.
 @author Pathum Danthanarayana, 101181411
 @date April 11, 2024
 """
-from flask import Flask
-from flask import jsonify
-from flask import request
-from flask import Response
-from flask import json
+from flask import Flask, jsonify, request, Response, json, make_response
 import simplejson as simplejson
 from flask_cors import CORS, cross_origin
 import psycopg2
@@ -66,10 +62,11 @@ def get_subscription_models():
         # Return Response with JSON data
         return jsonify(json_data)
 
-    except (PostgresError, Exception) as queryErr:
-        print(f"[QUERY ERROR] {queryErr}")
-        # Return response as INTERNAL SERVER ERROR
-        return Response(status=500)
+    except (PostgresError, Exception) as query_err:
+        print(f"[QUERY ERROR] {query_err}")
+        # Return response containing thrown error and status code of INTERNAL SERVER ERROR
+        error_response = make_response(query_err, 500)
+        return error_response
 
 
 """
@@ -117,10 +114,11 @@ def register_member():
         db_conn.commit()
         # Return response as OK
         return Response(status=200)
-    except (PostgresError, Exception) as queryErr:
-        print(f"[QUERY ERROR] {queryErr}")
-        # Return response as INTERNAL SERVER ERROR
-        return Response(status=500)
+    except (PostgresError, Exception) as query_err:
+        print(f"[QUERY ERROR] {query_err}")
+        # Return response containing thrown error and status code of INTERNAL SERVER ERROR
+        error_response = make_response(query_err, 500)
+        return error_response
 
 
 # Main method
