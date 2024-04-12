@@ -86,8 +86,8 @@ def register_member():
         print(f"[LOG] Received request to register member: {member}")
 
         # Insert new tuple into Account table, and return its account_id (PK)
-        cursor.execute("INSERT INTO account (email, password, type) VALUES (%s, %s, %s) RETURNING account_id",
-                       (member['email'], password, account_type))
+        cursor.execute("INSERT INTO account (username, password, type) VALUES (%s, %s, %s) RETURNING account_id",
+                       (member['username'], member['password'], account_type))
         account_id = int(cursor.fetchone()[0])
         print(f"[LOG]: New account ID: {account_id}")
         # Commit changes
@@ -98,10 +98,10 @@ def register_member():
         subscription_type = str(cursor.fetchone()[0])
 
         current_date = date.today()
-        if subscription_type.lower() == 'monthly':
+        if subscription_type == 'Monthly':
             # Add a month to the current date
             billing_date = str(current_date + relativedelta(months=1))
-        elif subscription_type.lower() == 'annual':
+        elif subscription_type == 'Annual':
             # Add a year to the current date
             billing_date = str(current_date + relativedelta(years=1))
         else:
@@ -109,10 +109,10 @@ def register_member():
             billing_date = current_date
 
         # Insert new tuple into Member table (using account_id as member_id)
-        cursor.execute("INSERT INTO member (member_id, first_name, last_name, age, date_of_birth, height, weight, next_pay_date, subscription_id) "
+        cursor.execute("INSERT INTO member (member_id, first_name, last_name, email, date_of_birth, height, weight, next_pay_date, subscription_id) "
                        "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                       (account_id, member['first_name'], member['last_name'], member['age'], member['date_of_birth'],
-                        member['street_name'], member['height'], member['weight'], billing_date, member['subscription_id']))
+                       (account_id, member['first_name'], member['last_name'], member['email'], member['date_of_birth'],
+                        member['height'], member['weight'], billing_date, member['subscription_id']))
         # Commit changes
         db_conn.commit()
         # Return response as OK

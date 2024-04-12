@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS subscription (
 /* Create table to store account information */
 CREATE TABLE IF NOT EXISTS account (
 	account_id SERIAL PRIMARY KEY,
-    email VARCHAR(50) NOT NULL UNIQUE,
+    username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(50) NOT NULL UNIQUE,
     type VARCHAR(20) NOT NULL
 );
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS member (
 	member_id INT PRIMARY KEY,
     first_name VARCHAR(20) NOT NULL,
     last_name VARCHAR(20) NOT NULL,
-	age INT NOT NULL,
+    email VARCHAR(50) NOT NULL,
 	date_of_birth DATE NOT NULL,
 	height NUMERIC(5, 2) NOT NULL,
 	weight NUMERIC(5, 2) NOT NULL,
