@@ -19,7 +19,7 @@ const RegisterForm = () => {
     const [height, set_height] = useState();
     const [weight, set_weight] = useState();
     const [planDialogVisible, setPlanDialogVisible] = useState(false);
-    const [subscription_id, set_subscription_id] = useState();
+    const [subscription_id, set_subscription_id] = useState(-1);
 
     const formComplete = () => {
         return !(first_name !== "" &&
@@ -30,7 +30,7 @@ const RegisterForm = () => {
             password !== "" &&
             height !== null &&
             weight !== null &&
-            subscription_id !== null
+            subscription_id !== -1
         )
     }
 
@@ -39,7 +39,7 @@ const RegisterForm = () => {
             first_name: first_name,
             last_name: last_name,
             email: email,
-            date_of_birth: date_of_birth,
+            date_of_birth: date_of_birth.toDateString(),
             username: username,
             password: password,
             height: height,

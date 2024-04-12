@@ -1,3 +1,8 @@
+/* Drop tables if they exist already */
+DROP TABLE IF EXISTS Member;
+DROP TABLE IF EXISTS Subscription;
+DROP TABLE IF EXISTS Account;
+
 /* Create table to store info for different types of subscriptions */
 CREATE TABLE IF NOT EXISTS subscription (
     subscription_id SERIAL PRIMARY KEY,
