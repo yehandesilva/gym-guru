@@ -10,22 +10,6 @@ import json
 import psycopg2
 from psycopg2 import Error as PostgresError
 
-# FUNCTIONS FOR PERFORMING SQL QUERIES
-"""
-Returns info for all the different subscription models
-available.
-"""
-def get_subscription_models():
-    with db_conn.cursor() as cursor:
-        try:
-            cursor.execute("SELECT * FROM subscription")
-            subscription_models = cursor.fetchall()
-            print(f"[QUERY] Subscription models: {subscription_models}")
-            return subscription_models
-        except (PostgresError, Exception) as err:
-            print(f"[QUERY ERROR] {err}")
-
-
 # Create Flask app
 app = Flask(__name__)
 
@@ -41,6 +25,23 @@ try:
 except (PostgresError, Exception) as err:
     print("[CONNECTION] ERROR: Connection to the Gym Guru database failed: " + err)
     exit()
+
+
+# FUNCTIONS FOR PERFORMING SQL QUERIES
+"""
+Returns info for all the different subscription models
+available.
+"""
+@app.route('/get_subscription_models')
+def get_subscription_models():
+    with db_conn.cursor() as cursor:
+        try:
+            cursor.execute("SELECT * FROM subscription")
+            subscription_models = cursor.fetchall()
+            print(f"[QUERY] Subscription models: {subscription_models}")
+            return subscription_models
+        except (PostgresError, Exception) as err:
+            print(f"[QUERY ERROR] {err}")
 
 # Main method
 if __name__ == '__main__':
