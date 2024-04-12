@@ -59,10 +59,12 @@ def get_subscription_models():
         cursor.execute("SELECT * FROM subscription")
         subscription_models = cursor.fetchall()
         print(f"[QUERY] Subscription models: {subscription_models}")
+
         # Return tuples as JSON format to front-end (convert Decimal type to decimal numbers as well)
         json_data = simplejson.dumps(subscription_models, use_decimal=True)
         print(f"[LOG] Subscription model data converted into JSON format: {json_data}")
-        return jsonify(json_data, use_decimal=True)
+        return jsonify(json_data)
+
     except (PostgresError, Exception) as queryErr:
         print(f"[QUERY ERROR] {queryErr}")
         # Return response as INTERNAL SERVER ERROR
