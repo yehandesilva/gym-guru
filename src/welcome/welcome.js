@@ -1,13 +1,27 @@
 import gymGuruLogo from "../assets/logo.png";
 
-import './welcome.css';
+import {useState} from "react";
+import { Image } from 'primereact/image';
+import Login from './login';
+import RegisterForm from "./registerForm";
 
 const Welcome = () => {
+
+    const [login, setLogin] = useState(true);
     return (
-        <div>
+        <div className='mt-8'>
             {/* Gym Guru Logo and welcome text */}
-            <img src={gymGuruLogo} className="logo" alt="Gym Guru logo"/>
-            <h1 className="welcome">Welcome.</h1>
+            <div className='flex justify-content-center'>
+                <Image src={gymGuruLogo} alt="Image" width="250" />
+            </div>
+            <div className='flex justify-content-center mt-6'>
+                {
+                    (login)?
+                        <Login setLogin={setLogin}/>
+                        :
+                        <RegisterForm setLogin={setLogin}/>
+                }
+            </div>
         </div>
     )
 }
