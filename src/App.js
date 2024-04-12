@@ -2,6 +2,7 @@
 import "primereact/resources/primereact.min.css";
 import 'primereact/resources/themes/vela-green/theme.css';
 import "primeflex/primeflex.css";
+import 'primeicons/primeicons.css';
 
 import './App.css';
 
