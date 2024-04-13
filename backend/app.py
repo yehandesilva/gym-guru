@@ -352,7 +352,7 @@ def get_interest_names():
         return make_response(jsonify({'error_message': str(e)}), 500)
 
 
-# MANAGE FITNESS CLASSES FOR MEMBER
+# MANAGE FITNESS GOALS FOR MEMBER
 
 """
 Returns all the uncompleted fitness goals for a specific member.
@@ -478,6 +478,12 @@ def update_fitness_goal():
         db_conn.rollback()
         # Return response containing thrown error and status code of INTERNAL SERVER ERROR
         return make_response(jsonify({'error_message': str(e)}), 500)
+
+
+# MANAGE FITNESS CLASSES FOR MEMBER
+
+
+
 
 # Main method
 if __name__ == '__main__':

@@ -65,6 +65,44 @@ CREATE TABLE IF NOT EXISTS fitness_goal (
 		REFERENCES member (member_id)
 );
 
+/* Create table to store trainers */
+CREATE TABLE IF NOT EXISTS trainer (
+	trainer_id SERIAL PRIMARY KEY,
+	first_name VARCHAR(20) NOT NULL,
+    last_name VARCHAR(20) NOT NULL,
+	rating INT
+);
+
+/* Create table to store rooms */
+CREATE TABLE IF NOT EXISTS room (
+	room_id SERIAL PRIMARY KEY,
+	type VARCHAR(20) NOT NULL
+);
+
+/* Create table to store fitness classes */
+CREATE TABLE IF NOT EXISTS fitness_class (
+	fitness_class_id SERIAL PRIMARY KEY,
+	trainer_id INT NOT NULL,
+	room_id INT NOT NULL,
+	type VARCHAR(20) NOT NULL,
+	class_date DATE NOT NULL,
+	FOREIGN KEY (trainer_id)
+		REFERENCES trainer (trainer_id),
+	FOREIGN KEY (room_id)
+		REFERENCES room (room_id)
+);
+
+/* Create table to store fitness class members */
+CREATE TABLE IF NOT EXISTS fitness_class_member (
+	fitness_class_id INT NOT NULL,
+	member_id INT NOT NULL,
+	PRIMARY KEY (fitness_class_id, member_id),
+	FOREIGN KEY (fitness_class_id)
+		REFERENCES fitness_class (fitness_class_id),
+	FOREIGN KEY (member_id)
+		REFERENCES member (member_id)
+);
+
 
 /* Sample insertions */
 
