@@ -1,3 +1,19 @@
+/* Drop tables if they exist already */
+DROP TABLE IF EXISTS member CASCADE;
+DROP TABLE IF EXISTS trainer CASCADE;
+DROP TABLE IF EXISTS fitness_class_member CASCADE;
+DROP TABLE IF EXISTS fitness_goal CASCADE;
+DROP TABLE IF EXISTS session CASCADE;
+DROP TABLE IF EXISTS interest CASCADE;
+DROP TABLE IF EXISTS specialization CASCADE;
+DROP TABLE IF EXISTS fitness_class CASCADE;
+DROP TABLE IF EXISTS subscription CASCADE;
+DROP TABLE IF EXISTS account CASCADE;
+DROP TABLE IF EXISTS skill CASCADE;
+DROP TABLE IF EXISTS room CASCADE;
+DROP TABLE IF EXISTS availability CASCADE;
+
+
 /* Create table to store info for different types of subscriptions */
 CREATE TABLE IF NOT EXISTS subscription (
     subscription_id SERIAL PRIMARY KEY,
