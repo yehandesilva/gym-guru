@@ -2,7 +2,7 @@ import {useEffect, useRef, useState} from "react";
 import {Toast} from "primereact/toast";
 import Header from "./header";
 import {DataView} from "primereact/dataview";
-import {Tag} from "primereact/tag";
+import {Link} from "react-router-dom";
 
 
 const Home = ({user, setUser}) => {
@@ -26,6 +26,7 @@ const Home = ({user, setUser}) => {
         {
             name: "Profile",
             icon: "pi pi-user-edit",
+            link: "profile",
         },
     ];
 
@@ -38,7 +39,7 @@ const Home = ({user, setUser}) => {
 
         };
         return (
-            <div className="col-12 sm:col-6 lg:col-12 xl:col-4 px-3 py-2 w-3 bg-primary" key={page.name}
+            <Link to={page.link} className="col-12 sm:col-6 lg:col-12 xl:col-4 px-3 py-2 w-3 bg-primary" key={page.name}
                  onClick={handleItemClick}>
                 <div className="grid mt-1 p-4 border-2 border-round-xl justify-content-center text-center">
                     <div className="col-12">
@@ -48,7 +49,8 @@ const Home = ({user, setUser}) => {
                         <div className="text-6xl font-bold">{page.name}</div>
                     </div>
                 </div>
-            </div>
+            </Link>
+
         );
     };
 

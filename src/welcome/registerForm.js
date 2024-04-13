@@ -1,4 +1,4 @@
-import {useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {InputText} from "primereact/inputtext";
 import {Button} from "primereact/button";
 import {FloatLabel} from "primereact/floatlabel";
@@ -6,12 +6,12 @@ import { Calendar } from 'primereact/calendar';
 import { InputNumber } from 'primereact/inputnumber'
 import { Dialog } from 'primereact/dialog';
 import Subscriptions from "../subscriptions";
-import {RegisterMember} from "../api/databaseAPI";
+import {RegisterMember, UpdateMember} from "../api/databaseAPI";
 import {Password} from "primereact/password";
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { Toast } from 'primereact/toast';
 
-const RegisterForm = ({setLogin}) => {
+const RegisterForm = ({user, setUser, update}) => {
 
     const toast = useRef(null);
     const [first_name, set_first_name] = useState("");
@@ -25,6 +25,22 @@ const RegisterForm = ({setLogin}) => {
     const [planDialogVisible, setPlanDialogVisible] = useState(false);
     const [subscription_id, set_subscription_id] = useState(-1);
     const [card_number, set_card_number] = useState("");
+
+    useEffect(() => {
+        if (user) {
+            const _date_of_birth = new Date(user.date_of_birth);
+            set_first_name(user.first_name);
+            set_last_name(user.last_name);
+            set_email(user.email);
+            set_date_of_birth(_date_of_birth);
+            set_username(user.username);
+            set_password(user.password);
+            set_weight(user.weight);
+            set_height(user.height);
+            set_subscription_id(user.subscription_id);
+            set_card_number(user.card_number);
+        }
+    }, [user]);
 
     const formComplete = () => {
         return !(first_name !== "" &&
@@ -53,11 +69,22 @@ const RegisterForm = ({setLogin}) => {
             subscription_id: subscription_id,
             card_number: card_number,
         }
-        const res = await RegisterMember(memberData);
-        if (res.ok) {
-            toast.current.show({ severity: 'info', summary: 'Success', detail: 'You have registered', life: 3000 });
+        if (update) {
+            memberData.member_id = user.member_id;
+            const res = await UpdateMember(memberData);
+            if (res.ok) {
+                toast.current.show({ severity: 'info', summary: 'Success', detail: 'Updated personal information', life: 3000 });
+                setUser(memberData);
+            } else {
+                toast.current.show({ severity: 'warn', summary: 'Failed', detail: res.res, life: 3000 });
+            }
         } else {
-            toast.current.show({ severity: 'warn', summary: 'Failed', detail: res.res, life: 3000 });
+            const res = await RegisterMember(memberData);
+            if (res.ok) {
+                toast.current.show({ severity: 'info', summary: 'Success', detail: 'You have registered', life: 3000 });
+            } else {
+                toast.current.show({ severity: 'warn', summary: 'Failed', detail: res.res, life: 3000 });
+            }
         }
     }
 
@@ -144,7 +171,7 @@ const RegisterForm = ({setLogin}) => {
                             outlined onClick={() => setPlanDialogVisible(true)}/>
                 </div>
                 <div className='col-12 flex justify-content-center mt-2'>
-                    <Button className='border-round-2xl border-primary text-900 font-bold' label="Register" outlined
+                    <Button className='border-round-2xl border-primary text-900 font-bold' label={(update)? "Update":"Register"} outlined
                             disabled={formComplete()} onClick={() => confirmRegistration()}/>
                 </div>
             </div>
