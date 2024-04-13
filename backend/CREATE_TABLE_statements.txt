@@ -146,12 +146,23 @@ INSERT INTO subscription (amount, name, type) VALUES (200.00, 'Fit Elite', 'Annu
 /* Skills */
 INSERT INTO skill (name) VALUES ('Cardio');
 INSERT INTO skill (name) VALUES ('Legs');
+INSERT INTO skill (name) VALUES ('Chest');
 INSERT INTO skill (name) VALUES ('Upper body');
 
-/* (INSERT THE Trainers, Rooms, and Fitness classes SECTIONS IN SEQUENTIAL ORDER) */
+/* (INSERT THE FOLLOWING SECTIONS IN SEQUENTIAL ORDER) */
 /* Trainers */
 INSERT INTO trainer (first_name, last_name, rating) VALUES ('David', 'Smith', 5);
 INSERT INTO trainer (first_name, last_name, rating) VALUES ('Mark', 'Doe', 4);
+/* Availability */
+INSERT INTO availability (trainer_id, day) VALUES (1, 'Monday');
+INSERT INTO availability (trainer_id, day) VALUES (1, 'Wednesday');
+INSERT INTO availability (trainer_id, day) VALUES (2, 'Tuesday');
+INSERT INTO availability (trainer_id, day) VALUES (1, 'Thursday');
+/* Specializations */
+INSERT INTO specialization (trainer_id, skill_id) VALUES (1, 1);
+INSERT INTO specialization (trainer_id, skill_id) VALUES (1, 4);
+INSERT INTO specialization (trainer_id, skill_id) VALUES (2, 2);
+INSERT INTO specialization (trainer_id, skill_id) VALUES (2, 3);
 
 /* Rooms */
 INSERT INTO room (type) VALUES ('Weight room');
