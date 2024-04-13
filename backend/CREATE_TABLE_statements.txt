@@ -56,3 +56,7 @@ CREATE TABLE IF NOT EXISTS interest (
 /* Sample insertions */
 INSERT INTO subscription (amount, name, type) VALUES (30.00, 'Fit Flex', 'Monthly');
 INSERT INTO subscription (amount, name, type) VALUES (200.00, 'Fit Elite', 'Annual');
+
+INSERT INTO skill (name) VALUES ('Cardio');
+INSERT INTO skill (name) VALUES ('Legs');
+INSERT INTO skill (name) VALUES ('Upper body');
