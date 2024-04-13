@@ -10,7 +10,7 @@ import {Routes, Route, Navigate} from 'react-router-dom';
 import Welcome from "./welcome/welcome";
 import {useState} from "react";
 import Home from "./home/home";
-
+import Profile from "./home/profile"
 
 function App() {
 
@@ -21,12 +21,13 @@ function App() {
             {
                 (!user)?
                     <Routes>
-                        <Route path="/" element={<Welcome setUser={setUser}/>} />
+                        <Route path="/" element={<Welcome user={user} setUser={setUser}/>} />
                         <Route path="*" element={<Navigate replace to="/" />} />
                     </Routes>
                     :
                     <Routes>
                         <Route path="/" element={<Home user={user} setUser={setUser}/>} />
+                        <Route path="/profile" element={<Profile user={user} setUser={setUser}/>} />
                         <Route path="*" element={<Navigate replace to="/" />} />
                     </Routes>
             }

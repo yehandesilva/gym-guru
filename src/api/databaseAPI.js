@@ -42,6 +42,20 @@ export const RegisterMember = async(memberData) => {
     }
 }
 
+export const UpdateMember = async(memberData) => {
+    try {
+        const requestOptionsHead = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify(memberData),
+        };
+        const response = await fetch(`${rte}update_member_info`, requestOptionsHead);
+        return responseFormat(response, false);
+    } catch (e) {
+        return null;
+    }
+}
+
 export const AccountLogin = async(signInData) => {
     try {
         const requestOptionsHead = {

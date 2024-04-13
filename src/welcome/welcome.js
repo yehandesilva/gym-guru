@@ -7,7 +7,7 @@ import RegisterForm from "./registerForm";
 import {Button} from "primereact/button";
 import {Ripple} from 'primereact/ripple';
 
-const Welcome = ({setUser}) => {
+const Welcome = ({user, setUser}) => {
 
     const [login, setLogin] = useState(true);
     return (
@@ -34,7 +34,7 @@ const Welcome = ({setUser}) => {
                         (login) ?
                             <Login setUser={setUser} />
                             :
-                            <RegisterForm setLogin={setLogin}/>
+                            <RegisterForm user={user} setUser={setUser} update={false}/>
                     }
                 </div>
             </div>
