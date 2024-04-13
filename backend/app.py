@@ -466,7 +466,7 @@ def update_fitness_goal():
         cursor.execute("UPDATE fitness_goal SET name = %s, end_date = %s, target_goal = %s, current_value = %s,  completed = %s "
                        "WHERE (fitness_goal_id = %s AND member_id = %s)",
                        (fitness_goal['name'], fitness_goal['end_date'], fitness_goal['target_goal'],
-                        fitness_goal['current_value'], fitness_goal['completed']))
+                        fitness_goal['current_value'], fitness_goal['completed'], fitness_goal['fitness_goal_id'], fitness_goal['member_id']))
         # Commit change
         db_conn.commit()
         # Return OK response
