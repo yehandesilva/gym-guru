@@ -116,3 +116,20 @@ INSERT INTO skill (name) VALUES ('Cardio');
 INSERT INTO skill (name) VALUES ('Legs');
 INSERT INTO skill (name) VALUES ('Upper body');
 
+(INSERT THE FOLLOWING 3 SECTIONS IN SEQUENTIAL ORDER)
+/* Trainers */
+INSERT INTO trainer (first_name, last_name) VALUES ('David', 'Smith');
+INSERT INTO trainer (first_name, last_name) VALUES ('Mark', 'Doe');
+
+/* Rooms */
+INSERT INTO room (type) VALUES ('Weight room');
+INSERT INTO room (type) VALUES ('Yoga room');
+INSERT INTO room (type) VALUES ('Cardio room');
+
+/* Fitness classes */
+INSERT INTO fitness_class (trainer_id, room_id, type, class_date)
+VALUES (1, 1, 'Weight', '2024-04-14');
+
+INSERT INTO fitness_class (trainer_id, room_id, type, class_date)
+VALUES (2, 2, 'Yoga', '2024-04-14');
+
