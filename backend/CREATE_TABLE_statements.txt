@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS fitness_goal (
 
 /* Create table to store trainers */
 CREATE TABLE IF NOT EXISTS trainer (
-	trainer_id SERIAL PRIMARY KEY,
+	trainer_id INT PRIMARY KEY,
 	first_name VARCHAR(20) NOT NULL,
     last_name VARCHAR(20) NOT NULL,
 	rating INT DEFAULT 0,
