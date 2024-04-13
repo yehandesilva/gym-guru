@@ -104,6 +104,38 @@ CREATE TABLE IF NOT EXISTS fitness_class_member (
 		REFERENCES member (member_id)
 );
 
+/* Create table to store sessions with trainers */
+CREATE TABLE IF NOT EXISTS session (
+	member_id INT NOT NULL,
+	trainer_id INT NOT NULL,
+	day VARCHAR(20) NOT NULL,
+	PRIMARY KEY (member_id, trainer_id, day),
+	FOREIGN KEY (member_id)
+		REFERENCES member (member_id),
+	FOREIGN KEY (trainer_id)
+		REFERENCES trainer (trainer_id)
+);
+
+/* Create table to store trainer availability */
+CREATE TABLE IF NOT EXISTS availability (
+	trainer_id INT NOT NULL,
+	day VARCHAR(20) NOT NULL,
+	PRIMARY KEY (trainer_id, day),
+	FOREIGN KEY (trainer_id)
+		REFERENCES trainer (trainer_id)
+);
+
+/* Create table to store trainer specializations */
+CREATE TABLE IF NOT EXISTS specialization (
+	trainer_id INT NOT NULL,
+	skill_id INT NOT NULL,
+	PRIMARY KEY (trainer_id, skill_id),
+	FOREIGN KEY (trainer_id)
+		REFERENCES trainer (trainer_id),
+	FOREIGN KEY (skill_id)
+		REFERENCES skill (skill_id)
+);
+
 
 /* Sample insertions */
 
@@ -116,7 +148,7 @@ INSERT INTO skill (name) VALUES ('Cardio');
 INSERT INTO skill (name) VALUES ('Legs');
 INSERT INTO skill (name) VALUES ('Upper body');
 
-/* (INSERT THE FOLLOWING 3 SECTIONS IN SEQUENTIAL ORDER) */
+/* (INSERT THE Trainers, Rooms, and Fitness classes SECTIONS IN SEQUENTIAL ORDER) */
 /* Trainers */
 INSERT INTO trainer (first_name, last_name, rating) VALUES ('David', 'Smith', 5);
 INSERT INTO trainer (first_name, last_name, rating) VALUES ('Mark', 'Doe', 4);
@@ -129,7 +161,9 @@ INSERT INTO room (type) VALUES ('Cardio room');
 /* Fitness classes */
 INSERT INTO fitness_class (trainer_id, room_id, type, class_date)
 VALUES (1, 1, 'Weight', '2024-04-14');
-
 INSERT INTO fitness_class (trainer_id, room_id, type, class_date)
 VALUES (2, 2, 'Yoga', '2024-04-14');
+
+
+
 

@@ -334,7 +334,7 @@ def get_interest_names():
         # Get JSON data from received request
         member = json.loads(request.data)
         # Get info on all interests that member has
-        cursor.execute("SELECT skill.name FROM interest JOIN skill ON interest.skill_id = skill.skill_id WHERE member_id = %s",
+        cursor.execute("SELECT name FROM interest JOIN skill ON interest.skill_id = skill.skill_id WHERE member_id = %s",
                        (member['member_id'],))
         interests_names = cursor.fetchall()
         print(f"[QUERY] Interest names for member: {interests_names}")
@@ -591,6 +591,132 @@ def deregister_in_fitness_class():
         db_conn.commit()
         # Return OK response
         return Response(status=200)
+
+    except (PostgresError, Exception) as e:
+        print(f"[EXCEPTION] {e}")
+        # Reset transaction state
+        db_conn.rollback()
+        # Return response containing thrown error and status code of INTERNAL SERVER ERROR
+        return make_response(jsonify({'error_message': str(e)}), 500)
+
+
+# MANAGE SESSIONS FOR MEMBER
+
+"""
+Returns info on all sessions a member is booked for (including attributes about the trainer)
+"""
+@app.route('/member_sessions', methods=['POST'])
+@cross_origin()
+def get_member_sessions():
+    print("[LOG] Received request to get member's sessions")
+    # Use RealDictCursor to return data as dictionary format
+    cursor = db_conn.cursor(cursor_factory=RealDictCursor)
+    try:
+        # Get JSON data from received request
+        member = json.loads(request.data)
+        # Get all sessions that a member is booked for
+        cursor.execute("SELECT * FROM session NATURAL JOIN trainer WHERE member_id = %s",
+                       (member['member_id'],))
+        member_sessions = cursor.fetchall()
+        print(f"[QUERY] Member sessions: {member_sessions}")
+
+        json_data = json.dumps(member_sessions)
+        print(f"[LOG] Member sessions to JSON str: {json_data}")
+        # Return Response with JSON data
+        return jsonify(json_data)
+
+    except (PostgresError, Exception) as e:
+        print(f"[EXCEPTION] {e}")
+        # Reset transaction state
+        db_conn.rollback()
+        # Return response containing thrown error and status code of INTERNAL SERVER ERROR
+        return make_response(jsonify({'error_message': str(e)}), 500)
+
+
+"""
+Cancels a session based on the provided member_id, trainer_id, and day.
+"""
+@app.route('/cancel_session', methods=['POST'])
+@cross_origin()
+def cancel_session():
+    print("[LOG] Received request to cancel session")
+    cursor = db_conn.cursor()
+    try:
+        # Get JSON data from received request
+        session = json.loads(request.data)
+        # Delete session
+        cursor.execute("DELETE FROM session WHERE (member_id = %s AND trainer_id = %s AND day = %s)",
+                       (session['member_id'], session['trainer_id'], session['day'],))
+        # Commit changes
+        db_conn.commit()
+        # Return OK response
+        return Response(status=200)
+
+    except (PostgresError, Exception) as e:
+        print(f"[EXCEPTION] {e}")
+        # Reset transaction state
+        db_conn.rollback()
+        # Return response containing thrown error and status code of INTERNAL SERVER ERROR
+        return make_response(jsonify({'error_message': str(e)}), 500)
+
+
+"""
+Creates a new session for member and trainer.
+"""
+@app.route('/create_session', methods=['POST'])
+@cross_origin()
+def create_session():
+    print("[LOG] Received request to create session")
+    cursor = db_conn.cursor()
+    try:
+        # Get JSON data from received request
+        session = json.loads(request.data)
+        # Insert a new session with the provided info
+        cursor.execute("INSERT INTO session (member_id, trainer_id, day) VALUES (%s %s %s)",
+                       (session['member_id'], session['trainer_id'], session['day'],))
+        # Commit changes
+        db_conn.commit()
+        # Return OK response
+        return Response(status=200)
+
+    except (PostgresError, Exception) as e:
+        print(f"[EXCEPTION] {e}")
+        # Reset transaction state
+        db_conn.rollback()
+        # Return response containing thrown error and status code of INTERNAL SERVER ERROR
+        return make_response(jsonify({'error_message': str(e)}), 500)
+
+
+"""
+Returns info on trainers (including all attributes from trainer and availability tables) that 
+are available on one of the provided days and specializes in at least one of the provided specializations.
+"""
+@app.route('/find_matching_trainers', methods=['POST'])
+@cross_origin()
+def find_matching_trainers():
+    print("[LOG] Received request to find matching trainer")
+    # Use RealDictCursor to return data as dictionary format
+    cursor = db_conn.cursor(cursor_factory=RealDictCursor)
+    try:
+        # Get JSON data from received request
+        search = json.loads(request.data)
+        days = tuple(search['days'])
+        specializations = tuple(search['specializations'])
+
+        # Get all trainers (and their availability) where they are available for
+        # at least one of the provided days, and specializes in at least one of the provided
+        # specializations
+        cursor.execute("SELECT trainer_id, first_name, last_name, rating, day, name "
+                       "FROM trainer NATURAL JOIN availability NATURAL JOIN specialization NATURAL JOIN skill"
+                       "WHERE (day IN %s AND name IN %s)",
+                       (days, specializations,))
+        suitable_trainers = cursor.fetchall()
+        print(f"[QUERY] Suitable trainers: {suitable_trainers}")
+
+        json_data = json.dumps(suitable_trainers)
+        print(f"[LOG] Suitable trainers to JSON str: {json_data}")
+        # Return Response with JSON data
+        return jsonify(json_data)
 
     except (PostgresError, Exception) as e:
         print(f"[EXCEPTION] {e}")
