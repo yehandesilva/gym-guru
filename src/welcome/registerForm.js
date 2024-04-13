@@ -6,7 +6,7 @@ import { Calendar } from 'primereact/calendar';
 import { InputNumber } from 'primereact/inputnumber'
 import { Dialog } from 'primereact/dialog';
 import Subscriptions from "../subscriptions";
-import {RegisterMember} from "../databaseAPI";
+import {RegisterMember} from "../api/databaseAPI";
 import {Password} from "primereact/password";
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { Toast } from 'primereact/toast';

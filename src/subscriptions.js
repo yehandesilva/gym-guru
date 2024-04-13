@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {GetSubscriptionModels} from "./databaseAPI";
+import {GetSubscriptionModels} from "./api/databaseAPI";
 import { Tag } from 'primereact/tag';
 import { DataView } from 'primereact/dataview';
 
