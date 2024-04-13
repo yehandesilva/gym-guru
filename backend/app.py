@@ -703,13 +703,29 @@ def find_matching_trainers():
         days = tuple(search['days'])
         specializations = tuple(search['specializations'])
 
-        # Get all trainers (and their availability) where they are available for
-        # at least one of the provided days, and specializes in at least one of the provided
-        # specializations
-        cursor.execute("SELECT trainer_id, first_name, last_name, rating, day, name "
-                       "FROM trainer NATURAL JOIN availability NATURAL JOIN specialization NATURAL JOIN skill "
-                       "WHERE (day IN %s AND name IN %s)",
-                       (days, specializations,))
+        # Check if no days were specified
+        if len(days) == 0:
+            # Get all trainers (and their availability) that specializes in at least one of the provided specializations
+            cursor.execute("SELECT trainer_id, first_name, last_name, rating, day, name "
+                           "FROM trainer NATURAL JOIN availability NATURAL JOIN specialization NATURAL JOIN skill "
+                           "WHERE name IN %s",
+                           (specializations,))
+        # Check if no specializations were specified
+        if len(specializations) == 0:
+            # Get all trainers (and their availability) that specializes in at least one of the provided specializations
+            cursor.execute("SELECT trainer_id, first_name, last_name, rating, day, name "
+                           "FROM trainer NATURAL JOIN availability NATURAL JOIN specialization NATURAL JOIN skill "
+                           "WHERE day IN %s",
+                           (days,))
+        # Otherwise, there's at least one day and specialization provided
+        else:
+            # Get all trainers (and their availability) where they are available for
+            # at least one of the provided days, and specializes in at least one of the provided
+            # specializations
+            cursor.execute("SELECT trainer_id, first_name, last_name, rating, day, name "
+                           "FROM trainer NATURAL JOIN availability NATURAL JOIN specialization NATURAL JOIN skill "
+                           "WHERE (day IN %s AND name IN %s)",
+                           (days, specializations,))
         suitable_trainers = cursor.fetchall()
         print(f"[QUERY] Suitable trainers: {suitable_trainers}")
 
