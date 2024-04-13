@@ -75,6 +75,7 @@ Registers a new member by first creating a new account for them,
 and then creating a new entry for them in the Members table.
 """
 @app.route('/register_member', methods=['POST'])
+@cross_origin()
 def register_member():
     cursor = db_conn.cursor()
     try:
@@ -115,7 +116,7 @@ def register_member():
         db_conn.commit()
         # Return response as OK
         return Response(status=200)
-    
+
     except (PostgresError, psycopg2.IntegrityError, Exception) as query_err:
         print(f"[QUERY ERROR] {query_err}")
         # Reset transaction state
@@ -129,7 +130,8 @@ Returns all attributes of the member (as well as their account info) matching
 the provided account username and password.
 If the username and password is invalid, a 404 response is returned
 """
-@app.route('/login', methods='[POST]')
+@app.route('/login', methods=['POST'])
+@cross_origin()
 def login():
     print("[LOG] Received request to find member associated with username/password")
     # Use RealDictCursor to return data as dictionary format
