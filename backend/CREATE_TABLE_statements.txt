@@ -1,7 +1,17 @@
 /* Drop tables if they exist already */
-DROP TABLE IF EXISTS Member;
-DROP TABLE IF EXISTS Subscription;
-DROP TABLE IF EXISTS Account;
+DROP TABLE IF EXISTS Member CASCADE;
+DROP TABLE IF EXISTS Trainer CASCADE;
+DROP TABLE IF EXISTS Fitness_Class_Member CASCADE;
+DROP TABLE IF EXISTS Fitness_Goal CASCADE;
+DROP TABLE IF EXISTS Session CASCADE;
+DROP TABLE IF EXISTS Interest CASCADE;
+DROP TABLE IF EXISTS Specialization CASCADE;
+DROP TABLE IF EXISTS Fitness_Class CASCADE;
+DROP TABLE IF EXISTS Subscription CASCADE;
+DROP TABLE IF EXISTS Account CASCADE;
+DROP TABLE IF EXISTS Skill CASCADE;
+DROP TABLE IF EXISTS Room CASCADE;
+DROP TABLE IF EXISTS Availability CASCADE;
 
 /* Create table to store info for different types of subscriptions */
 CREATE TABLE IF NOT EXISTS subscription (
@@ -151,8 +161,8 @@ INSERT INTO skill (name) VALUES ('Upper body');
 
 /* (INSERT THE FOLLOWING SECTIONS IN SEQUENTIAL ORDER) */
 /* Accounts for trainers */
-INSERT INTO account ('david10', 'david123', 'trainer');
-INSERT INTO account ('mark85', 'mark1234', 'trainer');
+INSERT INTO account (username, password, type) VALUES ('david10', 'david123', 'trainer');
+INSERT INTO account (username, password, type) VALUES ('mark85', 'mark1234', 'trainer');
 /* Trainer using Account ID */
 INSERT INTO trainer (trainer_id, first_name, last_name, rating) VALUES (1, 'David', 'Smith', 5);
 INSERT INTO trainer (trainer_id, first_name, last_name, rating) VALUES (2, 'Mark', 'Doe', 4);
