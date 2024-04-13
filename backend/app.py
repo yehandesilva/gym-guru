@@ -672,7 +672,7 @@ def create_session():
         # Get JSON data from received request
         session = json.loads(request.data)
         # Insert a new session with the provided info
-        cursor.execute("INSERT INTO session (member_id, trainer_id, day) VALUES (%s %s %s)",
+        cursor.execute("INSERT INTO session (member_id, trainer_id, day) VALUES (%s, %s, %s)",
                        (session['member_id'], session['trainer_id'], session['day'],))
         # Commit changes
         db_conn.commit()
