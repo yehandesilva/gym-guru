@@ -150,15 +150,20 @@ INSERT INTO skill (name) VALUES ('Chest');
 INSERT INTO skill (name) VALUES ('Upper body');
 
 /* (INSERT THE FOLLOWING SECTIONS IN SEQUENTIAL ORDER) */
-/* Trainers */
-INSERT INTO trainer (first_name, last_name, rating) VALUES ('David', 'Smith', 5);
-INSERT INTO trainer (first_name, last_name, rating) VALUES ('Mark', 'Doe', 4);
-/* Availability */
+/* Accounts for trainers */
+INSERT INTO account ('david10', 'david123', 'trainer');
+INSERT INTO account ('mark85', 'mark1234', 'trainer');
+/* Trainer using Account ID */
+INSERT INTO trainer (trainer_id, first_name, last_name, rating) VALUES (1, 'David', 'Smith', 5);
+INSERT INTO trainer (trainer_id, first_name, last_name, rating) VALUES (2, 'Mark', 'Doe', 4);
+
+/* Availability for trainers */
 INSERT INTO availability (trainer_id, day) VALUES (1, 'Monday');
 INSERT INTO availability (trainer_id, day) VALUES (1, 'Wednesday');
 INSERT INTO availability (trainer_id, day) VALUES (2, 'Tuesday');
 INSERT INTO availability (trainer_id, day) VALUES (2, 'Thursday');
-/* Specializations */
+
+/* Specializations for trainers */
 INSERT INTO specialization (trainer_id, skill_id) VALUES (1, 1);
 INSERT INTO specialization (trainer_id, skill_id) VALUES (1, 4);
 INSERT INTO specialization (trainer_id, skill_id) VALUES (2, 2);
