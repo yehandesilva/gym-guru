@@ -718,7 +718,7 @@ def find_matching_trainers():
             cursor.execute("SELECT trainer_id, first_name, last_name, rating, day, name "
                            "FROM trainer NATURAL JOIN availability NATURAL JOIN specialization NATURAL JOIN skill "
                            "WHERE (name IN %s AND (trainer_id, day) NOT IN "
-                           "(SELECT trainer_id, day FROM session WHERE member_id = %s)",
+                           "(SELECT trainer_id, day FROM session WHERE member_id = %s))",
                            (specializations, member_id,))
         # Check if no specializations were specified
         elif len(specializations) == 0:
@@ -726,7 +726,7 @@ def find_matching_trainers():
             cursor.execute("SELECT trainer_id, first_name, last_name, rating, day, name "
                            "FROM trainer NATURAL JOIN availability NATURAL JOIN specialization NATURAL JOIN skill "
                            "WHERE (day IN %s AND (trainer_id, day) NOT IN "
-                           "(SELECT trainer_id, day FROM session WHERE member_id = %s)",
+                           "(SELECT trainer_id, day FROM session WHERE member_id = %s))",
                            (days, member_id,))
         # Otherwise, there's at least one day and specialization provided
         else:
@@ -736,7 +736,7 @@ def find_matching_trainers():
             cursor.execute("SELECT trainer_id, first_name, last_name, rating, day, name "
                            "FROM trainer NATURAL JOIN availability NATURAL JOIN specialization NATURAL JOIN skill "
                            "WHERE (day IN %s AND name IN %s AND (trainer_id, day) NOT IN "
-                           "(SELECT trainer_id, day FROM session WHERE member_id = %s)",
+                           "(SELECT trainer_id, day FROM session WHERE member_id = %s))",
                            (days, specializations, member_id,))
         suitable_trainers = cursor.fetchall()
         print(f"[QUERY] Suitable trainers: {suitable_trainers}")
