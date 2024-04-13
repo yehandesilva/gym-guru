@@ -770,7 +770,7 @@ def get_trainer_sessions():
         trainer = json.loads(request.data)
         # Get info on all fitness classes, including attributes of trainer
         cursor.execute("SELECT member_id, trainer_id, member.first_name, member.last_name, day "
-                       "FROM session NATURAL JOIN members WHERE trainer_id = %s",
+                       "FROM session NATURAL JOIN member WHERE trainer_id = %s",
                        (trainer['trainer_id'],))
 
         trainer_sessions = cursor.fetchall()
