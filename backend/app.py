@@ -108,10 +108,10 @@ def register_member():
             return Response(status=500)
 
         # Insert new tuple into Member table (using account_id as member_id)
-        cursor.execute("INSERT INTO member (member_id, first_name, last_name, email, date_of_birth, height, weight, next_pay_date, subscription_id) "
-                       "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+        cursor.execute("INSERT INTO member (member_id, first_name, last_name, email, date_of_birth, height, weight, next_pay_date, subscription_id, card_number) "
+                       "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
                        (account_id, member['first_name'], member['last_name'], member['email'], member['date_of_birth'],
-                        member['height'], member['weight'], billing_date, member['subscription_id']))
+                        member['height'], member['weight'], billing_date, member['subscription_id'], member['card_number']))
         # Commit changes
         db_conn.commit()
         # Return response as OK
