@@ -5,7 +5,7 @@ import {Calendar} from "primereact/calendar";
 import { Checkbox } from 'primereact/checkbox';
 import {UpdateFitnessGoal} from "../api/databaseAPI";
 
-const Goal = ({fitnessGoal, modified, setModified}) => {
+const Goal = ({fitnessGoal, setModified}) => {
 
     const[goal, setGoal] = useState({
         member_id: -1,

@@ -188,3 +188,58 @@ export const UpdateFitnessGoal = async(goalData) => {
         return errorFormat(e);
     }
 }
+
+export const GetAllClasses = async() => {
+    try {
+        const requestOptionsHead = {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json'},
+        };
+        const response = await fetch(`${rte}all_fitness_classes`, requestOptionsHead);
+        return responseFormat(response, true);
+    } catch (e) {
+        return errorFormat(e);
+    }
+}
+
+export const GetUserClasses = async(memberId) => {
+    try {
+        const requestOptionsHead = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify({member_id: memberId}),
+        };
+        const response = await fetch(`${rte}fitness_class_ids`, requestOptionsHead);
+        return responseFormat(response, true);
+    } catch (e) {
+        return errorFormat(e);
+    }
+}
+
+export const JoinFitnessGlass = async(memberId, fitnessClassId) => {
+    try {
+        const requestOptionsHead = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify({member_id: memberId, fitness_class_id: fitnessClassId}),
+        };
+        const response = await fetch(`${rte}register_for_fitness_class`, requestOptionsHead);
+        return responseFormat(response, false);
+    } catch (e) {
+        return errorFormat(e);
+    }
+}
+
+export const LeaveFitnessClass = async(memberId, fitnessClassId) => {
+    try {
+        const requestOptionsHead = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify({member_id: memberId, fitness_class_id: fitnessClassId}),
+        };
+        const response = await fetch(`${rte}deregister_in_fitness_class`, requestOptionsHead);
+        return responseFormat(response, false);
+    } catch (e) {
+        return errorFormat(e);
+    }
+}
