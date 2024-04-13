@@ -48,7 +48,7 @@ const Goals = ({user, setUser}) => {
                 {
                     (ongoingGoals.map((goal) => {
                         return (
-                            <Goal fitnessGoal={goal} modified={modified} setModified={setModified}></Goal>
+                            <Goal fitnessGoal={goal} setModified={setModified}></Goal>
                         )
                     }))
                 }
@@ -60,7 +60,7 @@ const Goals = ({user, setUser}) => {
                 {
                     (completedGoals.map((goal) => {
                         return (
-                            <Goal fitnessGoal={goal} modified={modified} setModified={setModified}></Goal>
+                            <Goal fitnessGoal={goal} setModified={setModified}></Goal>
                         )
                     }))
                 }

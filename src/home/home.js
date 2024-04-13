@@ -19,10 +19,12 @@ const Home = ({user, setUser}) => {
         {
             name: "Sessions",
             icon: "pi pi-book",
+            link: "sessions"
         },
         {
             name: "Classes",
             icon: "pi pi-building",
+            link: "classes"
         },
         {
             name: "Profile",
@@ -40,7 +42,7 @@ const Home = ({user, setUser}) => {
 
         };
         return (
-            <Link to={page.link} className="col-12 sm:col-6 lg:col-12 xl:col-4 px-3 py-2 w-3 bg-primary" key={page.name}
+            <Link to={page.link} className="col-12 sm:col-6 lg:col-12 xl:col-4 px-3 py-2 w-3 border-primary text-primary" key={page.name}
                  onClick={handleItemClick}>
                 <div className="grid mt-1 p-4 border-2 border-round-xl justify-content-center text-center">
                     <div className="col-12">
