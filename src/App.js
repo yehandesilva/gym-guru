@@ -8,13 +8,17 @@ import './App.css';
 
 import {Routes, Route, Navigate} from 'react-router-dom';
 import Welcome from "./welcome/welcome";
+import {useState} from "react";
 
 
 function App() {
+
+    const [user, setUser] = useState();
+
     return (
         <>
             <Routes>
-                <Route path="/" element={<Welcome />} />
+                <Route path="/" element={<Welcome setUser={setUser}/>} />
                 <Route path="*" element={<Navigate replace to="/" />} />
             </Routes>
         </>

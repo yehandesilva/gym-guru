@@ -9,10 +9,10 @@ function Subscriptions({subscription_id, set_subscription_id}) {
 
     useEffect(() => {
         GetSubscriptionModels().then((data) => {
-            if (data && data.length > 0) {
-                set_subscription_id(data[0].subscription_id);
+            if (data.ok && data.res.length > 0) {
+                set_subscription_id(data.res[0].subscription_id);
             }
-            setSubscriptionModels(data);
+            setSubscriptionModels(data.res);
         });
     }, []);
 

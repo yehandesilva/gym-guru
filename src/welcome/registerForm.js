@@ -51,10 +51,10 @@ const RegisterForm = () => {
             subscription_id: subscription_id,
         }
         const res = await RegisterMember(memberData);
-        if (res === true) {
+        if (res.ok) {
             toast.current.show({ severity: 'info', summary: 'Success', detail: 'You have registered', life: 3000 });
         } else {
-            toast.current.show({ severity: 'warn', summary: 'Failed', detail: res, life: 3000 });
+            toast.current.show({ severity: 'warn', summary: 'Failed', detail: res.res, life: 3000 });
         }
     }
 
