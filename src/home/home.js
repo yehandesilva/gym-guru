@@ -14,6 +14,7 @@ const Home = ({user, setUser}) => {
         {
             name: "Goals",
             icon: "pi pi-flag-fill",
+            link: "goals"
         },
         {
             name: "Sessions",
