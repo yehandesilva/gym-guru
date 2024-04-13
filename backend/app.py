@@ -62,12 +62,12 @@ def get_subscription_models():
         # Return Response with JSON data
         return jsonify(json_data)
 
-    except (PostgresError, Exception) as query_err:
-        print(f"[QUERY ERROR] {query_err}")
+    except (PostgresError, Exception) as e:
+        print(f"[EXCEPTION] {e}")
         # Reset transaction state
         db_conn.rollback()
         # Return response containing thrown error and status code of INTERNAL SERVER ERROR
-        return make_response(jsonify({'error_message': str(query_err)}), 500)
+        return make_response(jsonify({'error_message': str(e)}), 500)
 
 
 """
@@ -117,12 +117,12 @@ def register_member():
         # Return response as OK
         return Response(status=200)
 
-    except (PostgresError, psycopg2.IntegrityError, Exception) as query_err:
-        print(f"[QUERY ERROR] {query_err}")
+    except (PostgresError, psycopg2.IntegrityError, Exception) as e:
+        print(f"[EXCEPTION] {e}")
         # Reset transaction state
         db_conn.rollback()
         # Return response containing thrown error and status code of INTERNAL SERVER ERROR
-        return make_response(jsonify({'error_message': str(query_err)}), 500)
+        return make_response(jsonify({'error_message': str(e)}), 500)
 
 
 """
@@ -178,22 +178,22 @@ def login():
                 print("[ERROR] Unknown account type returned from server")
                 return make_response(jsonify({'error_message': 'Unknown account type returned from server'}), 404)
 
-            # Convert data into JSON format (str) (to convert Decimal type to decimal numbers)
+            # Convert data into JSON format (str) (to convert Decimal type and Date type)
             json_data = simplejson.dumps(user_info, use_decimal=True, default=str)
             print(f"[LOG] User data converted to JSON str: {json_data}")
             # Return Response with user info as JSON and OK status
-            return make_response(jsonify(json_data), 200)
+            return jsonify(json_data)
         else:
             # Other possibility is a list of items of type RealDictRow (meaning multiple accounts)
             print("[ERROR] Duplicated account found!")
             return make_response(jsonify({'error_message': 'More than one account exists with provided credentials'}), 404)
 
-    except (PostgresError, psycopg2.IntegrityError, Exception) as query_err:
-        print(f"[QUERY ERROR] {query_err}")
+    except (PostgresError, psycopg2.IntegrityError, Exception) as e:
+        print(f"[EXCEPTION] {e}")
         # Reset transaction state
         db_conn.rollback()
         # Return response containing thrown error and status code of INTERNAL SERVER ERROR
-        return make_response(jsonify({'error_message': str(query_err)}), 500)
+        return make_response(jsonify({'error_message': str(e)}), 500)
 
 
 """
@@ -224,13 +224,15 @@ def update_member_info():
         # Return OK response
         return Response(status=200)
 
-    except (PostgresError, psycopg2.IntegrityError, Exception) as query_err:
-        print(f"[QUERY ERROR] {query_err}")
+    except (PostgresError, psycopg2.IntegrityError, Exception) as e:
+        print(f"[EXCEPTION] {e}")
         # Reset transaction state
         db_conn.rollback()
         # Return response containing thrown error and status code of INTERNAL SERVER ERROR
-        return make_response(jsonify({'error_message': str(query_err)}), 500)
+        return make_response(jsonify({'error_message': str(e)}), 500)
 
+
+# EDIT PERSONAL INFO FOR MEMBER
 
 """
 Returns all the different skills in the Skill table
@@ -252,12 +254,12 @@ def get_skills():
         # Return Response with JSON data
         return jsonify(json_data)
 
-    except (PostgresError, Exception) as query_err:
-        print(f"[QUERY ERROR] {query_err}")
+    except (PostgresError, Exception) as e:
+        print(f"[EXCEPTION] {e}")
         # Reset transaction state
         db_conn.rollback()
         # Return response containing thrown error and status code of INTERNAL SERVER ERROR
-        return make_response(jsonify({'error_message': str(query_err)}), 500)
+        return make_response(jsonify({'error_message': str(e)}), 500)
 
 
 """
@@ -283,12 +285,12 @@ def add_interest():
         # Return OK response
         return Response(status=200)
 
-    except (PostgresError, psycopg2.IntegrityError, Exception) as query_err:
-        print(f"[QUERY ERROR] {query_err}")
+    except (PostgresError, psycopg2.IntegrityError, Exception) as e:
+        print(f"[EXCEPTION] {e}")
         # Reset transaction state
         db_conn.rollback()
         # Return response containing thrown error and status code of INTERNAL SERVER ERROR
-        return make_response(jsonify({'error_message': str(query_err)}), 500)
+        return make_response(jsonify({'error_message': str(e)}), 500)
 
 
 """
@@ -311,12 +313,12 @@ def delete_interest():
         # Return OK response
         return Response(status=200)
 
-    except (PostgresError, psycopg2.IntegrityError, Exception) as query_err:
-        print(f"[QUERY ERROR] {query_err}")
+    except (PostgresError, psycopg2.IntegrityError, Exception) as e:
+        print(f"[EXCEPTION] {e}")
         # Reset transaction state
         db_conn.rollback()
         # Return response containing thrown error and status code of INTERNAL SERVER ERROR
-        return make_response(jsonify({'error_message': str(query_err)}), 500)
+        return make_response(jsonify({'error_message': str(e)}), 500)
 
 
 """
@@ -325,7 +327,7 @@ Returns all the interest names associated with a particular member.
 @app.route('/interest_names', methods=['POST'])
 @cross_origin()
 def get_interest_names():
-    print("[LOG] Received request to get all interested associated with member")
+    print("[LOG] Received request to get all interests associated with member")
     # Use RealDictCursor to return data as dictionary format
     cursor = db_conn.cursor(cursor_factory=RealDictCursor)
     try:
@@ -342,13 +344,110 @@ def get_interest_names():
         # Return Response with JSON data
         return jsonify(json_data)
 
-    except (PostgresError, Exception) as query_err:
-        print(f"[QUERY ERROR] {query_err}")
+    except (PostgresError, Exception) as e:
+        print(f"[EXCEPTION] {e}")
+        # Reset transaction state
+        db_conn.rollback()
+        # Return response containing thrown exception and status code of INTERNAL SERVER ERROR
+        return make_response(jsonify({'error_message': str(e)}), 500)
+
+
+# MANAGE FITNESS CLASSES FOR MEMBER
+
+"""
+Returns all the uncompleted fitness goals for a specific member.
+"""
+@app.route('/uncompleted_fitness_goals', methods=['GET'])
+@cross_origin()
+def get_uncompleted_fitness_goals():
+    print("[LOG] Received request to get all uncompleted fitness goals for member")
+    # Use RealDictCursor to return data as dictionary format
+    cursor = db_conn.cursor(cursor_factory=RealDictCursor)
+    try:
+        # Get JSON data from received request
+        member = json.loads(request.data)
+        # Get info about all uncompleted fitness goals for a member
+        cursor.execute("SELECT fitness_goal_id, member_id, name, end_date, target_goal, current_value, completed"
+                       " FROM member NATURAL JOIN fitness_goal WHERE (member_id = %s AND completed = %s)",
+                       (member['member_id'], "false",))
+        uncompleted_fitness_goals = cursor.fetchall()
+        print(f"[QUERY] Uncompleted fitness goals: {uncompleted_fitness_goals}")
+
+        # Convert data into JSON format (str) (to convert Decimal type and Date type)
+        json_data = simplejson.dumps(uncompleted_fitness_goals, use_decimal=True, default=str)
+        print(f"[LOG] Uncompleted fitness goals converted to JSON str: {json_data}")
+        # Return Response with JSON data
+        return jsonify(json_data)
+
+    except (PostgresError, Exception) as e:
+        print(f"[EXCEPTION] {e}")
         # Reset transaction state
         db_conn.rollback()
         # Return response containing thrown error and status code of INTERNAL SERVER ERROR
-        return make_response(jsonify({'error_message': str(query_err)}), 500)
+        return make_response(jsonify({'error_message': str(e)}), 500)
 
+
+"""
+Returns all the completed fitness goals for a specific member.
+"""
+@app.route('/completed_fitness_goals', methods=['GET'])
+@cross_origin()
+def completed_fitness_goals():
+    print("[LOG] Received request to get all completed fitness goals for member")
+    # Use RealDictCursor to return data as dictionary format
+    cursor = db_conn.cursor(cursor_factory=RealDictCursor)
+    try:
+        # Get JSON data from received request
+        member = json.loads(request.data)
+        # Get info about all uncompleted fitness goals for a member
+        cursor.execute("SELECT fitness_goal_id, member_id, name, end_date, target_goal, current_value, completed"
+                       " FROM member NATURAL JOIN fitness_goal WHERE (member_id = %s AND completed = %s)",
+                       (member['member_id'], "true",))
+        completed_fitness_goals = cursor.fetchall()
+        print(f"[QUERY] Completed fitness goals: {completed_fitness_goals}")
+
+        # Convert data into JSON format (str) (to convert Decimal type and Date type)
+        json_data = simplejson.dumps(completed_fitness_goals, use_decimal=True, default=str)
+        print(f"[LOG] Completed fitness goals converted to JSON str: {json_data}")
+        # Return Response with JSON data
+        return jsonify(json_data)
+
+    except (PostgresError, Exception) as e:
+        print(f"[EXCEPTION] {e}")
+        # Reset transaction state
+        db_conn.rollback()
+        # Return response containing thrown error and status code of INTERNAL SERVER ERROR
+        return make_response(jsonify({'error_message': str(e)}), 500)
+
+
+"""
+Updates a specific fitness goal for a specific member.
+"""
+@app.route('/update_fitness_goal', methods=['POST'])
+@cross_origin()
+def update_fitness_goal():
+    print("[LOG] Received request to update fitness goal for member")
+    # Use RealDictCursor to return data as dictionary format
+    cursor = db_conn.cursor()
+    try:
+        # Get JSON data from received request
+        fitness_goal = json.loads(request.data)
+        # Update fitness goal for specified member corresponding to the provided fitness_goal_id
+        cursor.execute("UPDATE fitness_goal SET name = %s, end_date = %s, target_goal = %s, current_value = %s,  completed = %s "
+                       "WHERE (fitness_goal_id = %s AND member_id = %s)",
+                       (fitness_goal['name'], fitness_goal['end_date'], fitness_goal['target_goal'],
+                        fitness_goal['current_value'], fitness_goal['completed']))
+        # Commit change
+        db_conn.commit()
+        # Return OK response
+        return Response(status=200)
+
+    except (PostgresError, Exception) as e:
+        print(f"[EXCEPTION] {e}")
+        # Reset transaction state
+        db_conn.rollback()
+        # Return response containing thrown error and status code of INTERNAL SERVER ERROR
+        return make_response(jsonify({'error_message': str(e)}), 500)
 
 # Main method
 if __name__ == '__main__':

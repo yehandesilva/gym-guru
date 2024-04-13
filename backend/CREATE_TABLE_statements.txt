@@ -1,6 +1,4 @@
 /* Drop tables if they exist already */
-DROP TABLE IF EXISTS Interest;
-DROP TABLE IF EXISTS Skill;
 DROP TABLE IF EXISTS Member;
 DROP TABLE IF EXISTS Subscription;
 DROP TABLE IF EXISTS Account;
@@ -54,11 +52,28 @@ CREATE TABLE IF NOT EXISTS interest (
 		REFERENCES skill (skill_id)
 );
 
+/* Create table to store members' fitness goals*/
+CREATE TABLE IF NOT EXISTS fitness_goal (
+	fitness_goal_id SERIAL PRIMARY KEY,
+	member_id INT NOT NULL,
+	name VARCHAR(50) NOT NULL,
+	end_date DATE NOT NULL,
+	target_goal NUMERIC(6, 2) NOT NULL,
+	current_value NUMERIC(6, 2) NOT NULL,
+	completed BOOLEAN NOT NULL,
+	FOREIGN KEY (member_id)
+		REFERENCES member (member_id)
+);
+
 
 /* Sample insertions */
+
+/* Subscriptions */
 INSERT INTO subscription (amount, name, type) VALUES (30.00, 'Fit Flex', 'Monthly');
 INSERT INTO subscription (amount, name, type) VALUES (200.00, 'Fit Elite', 'Annual');
 
+/* Skills */
 INSERT INTO skill (name) VALUES ('Cardio');
 INSERT INTO skill (name) VALUES ('Legs');
 INSERT INTO skill (name) VALUES ('Upper body');
+
