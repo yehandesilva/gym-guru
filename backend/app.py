@@ -702,35 +702,49 @@ def find_matching_trainers():
         search = json.loads(request.data)
         days = tuple(search['days'])
         specializations = tuple(search['specializations'])
+        member_id = search['member_id']
 
+        # Check if no days and no specializations were specified
+        if len(days) == 0 and len(specializations) == 0:
+            # Get all trainers (and their availability)
+            cursor.execute("SELECT trainer_id, first_name, last_name, rating, day, name "
+                           "FROM session NATURAL JOIN trainer NATURAL JOIN availability NATURAL JOIN specialization NATURAL JOIN skill EXCEPT "
+                           "SELECT trainer_id, first_name, last_name, rating, day, name "
+                           "FROM session NATURAL JOIN trainer NATURAL JOIN availability NATURAL JOIN specialization NATURAL JOIN skill "
+                           "WHERE member_id != %s",
+                           (member_id,))
         # Check if no days were specified
         if len(days) == 0:
             # Get all trainers (and their availability) that specializes in at least one of the provided specializations
             cursor.execute("SELECT trainer_id, first_name, last_name, rating, day, name "
-                           "FROM trainer NATURAL JOIN availability NATURAL JOIN specialization NATURAL JOIN skill "
-                           "WHERE name IN %s",
-                           (specializations,))
+                           "FROM session NATURAL JOIN trainer NATURAL JOIN availability NATURAL JOIN specialization NATURAL JOIN skill "
+                           "WHERE name IN %s EXCEPT "
+                           "SELECT trainer_id, first_name, last_name, rating, day, name "
+                           "FROM session NATURAL JOIN trainer NATURAL JOIN availability NATURAL JOIN specialization NATURAL JOIN skill "
+                           "WHERE member_id != %s",
+                           (specializations, member_id,))
         # Check if no specializations were specified
         elif len(specializations) == 0:
             # Get all trainers (and their availability) that specializes in at least one of the provided specializations
             cursor.execute("SELECT trainer_id, first_name, last_name, rating, day, name "
-                           "FROM trainer NATURAL JOIN availability NATURAL JOIN specialization NATURAL JOIN skill "
-                           "WHERE day IN %s",
-                           (days,))
-        # Check if no days and no specializations were specified
-        elif len(days) == 0 and len(specializations) == 0:
-            # Get all trainers (and their availability)
-            cursor.execute("SELECT trainer_id, first_name, last_name, rating, day, name "
-                           "FROM trainer NATURAL JOIN availability NATURAL JOIN specialization NATURAL JOIN skill")
+                           "FROM session NATURAL JOIN trainer NATURAL JOIN availability NATURAL JOIN specialization NATURAL JOIN skill "
+                           "WHERE day IN %s EXCEPT "
+                           "SELECT trainer_id, first_name, last_name, rating, day, name "
+                           "FROM session NATURAL JOIN trainer NATURAL JOIN availability NATURAL JOIN specialization NATURAL JOIN skill "
+                           "WHERE member_id != %s",
+                           (days, member_id,))
         # Otherwise, there's at least one day and specialization provided
         else:
             # Get all trainers (and their availability) where they are available for
             # at least one of the provided days, and specializes in at least one of the provided
             # specializations
             cursor.execute("SELECT trainer_id, first_name, last_name, rating, day, name "
-                           "FROM trainer NATURAL JOIN availability NATURAL JOIN specialization NATURAL JOIN skill "
-                           "WHERE (day IN %s AND name IN %s)",
-                           (days, specializations,))
+                           "FROM session NATURAL JOIN trainer NATURAL JOIN availability NATURAL JOIN specialization NATURAL JOIN skill "
+                           "WHERE (day IN %s AND name IN %s) EXCEPT "
+                           "SELECT trainer_id, first_name, last_name, rating, day, name "
+                           "FROM session NATURAL JOIN trainer NATURAL JOIN availability NATURAL JOIN specialization NATURAL JOIN skill "
+                           "WHERE member_id != %s",
+                           (days, specializations, member_id,))
         suitable_trainers = cursor.fetchall()
         print(f"[QUERY] Suitable trainers: {suitable_trainers}")
 
