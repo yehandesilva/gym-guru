@@ -1,6 +1,7 @@
 const rte = "http://localhost:4000/";
 
-const errorFormat = () => {
+const errorFormat = (e) => {
+    console.log("Error: "+ e);
     return {
         ok: false,
         res: "Problem in front-end",
@@ -31,7 +32,7 @@ export const GetSubscriptionModels = async() => {
         const response = await fetch(`${rte}subscription_models`, requestOptionsHead);
         return responseFormat(response, true);
     } catch (e) {
-        return errorFormat();
+        return errorFormat(e);
     }
 }
 
@@ -45,7 +46,7 @@ export const RegisterMember = async(memberData) => {
         const response = await fetch(`${rte}register_member`, requestOptionsHead);
         return responseFormat(response, false);
     } catch (e) {
-        return errorFormat();
+        return errorFormat(e);
     }
 }
 
@@ -59,7 +60,7 @@ export const UpdateMember = async(memberData) => {
         const response = await fetch(`${rte}update_member_info`, requestOptionsHead);
         return responseFormat(response, false);
     } catch (e) {
-        return errorFormat();
+        return errorFormat(e);
     }
 }
 
@@ -73,7 +74,7 @@ export const AccountLogin = async(signInData) => {
         const response = await fetch(`${rte}login`, requestOptionsHead);
         return responseFormat(response, true);
     } catch (e) {
-        return errorFormat();
+        return errorFormat(e);
     }
 }
 
@@ -86,7 +87,7 @@ export const GetAllSkills = async() => {
         const response = await fetch(`${rte}skills`, requestOptionsHead);
         return responseFormat(response, true);
     } catch (e) {
-        return errorFormat();
+        return errorFormat(e);
     }
 }
 
@@ -100,7 +101,7 @@ export const GetMemberInterests = async(memberId) => {
         const response = await fetch(`${rte}interest_names`, requestOptionsHead);
         return responseFormat(response, true);
     } catch (e) {
-        return errorFormat();
+        return errorFormat(e);
     }
 }
 
@@ -114,7 +115,7 @@ export const AddMemberInterest = async(memberId, skillId) => {
         const response = await fetch(`${rte}add_interest`, requestOptionsHead);
         return responseFormat(response, false);
     } catch (e) {
-        return errorFormat();
+        return errorFormat(e);
     }
 }
 
@@ -128,6 +129,62 @@ export const RemoveMemberInterest = async(memberId, skillId) => {
         const response = await fetch(`${rte}delete_interest`, requestOptionsHead);
         return responseFormat(response, false);
     } catch (e) {
-        return errorFormat();
+        return errorFormat(e);
+    }
+}
+
+export const GetUncompletedGoals = async(memberId) => {
+    try {
+        const requestOptionsHead = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify({member_id: memberId}),
+        };
+        const response = await fetch(`${rte}uncompleted_fitness_goals`, requestOptionsHead);
+        return responseFormat(response, true);
+    } catch (e) {
+        return errorFormat(e);
+    }
+}
+
+export const GetCompletedGoals = async(memberId) => {
+    try {
+        const requestOptionsHead = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify({member_id: memberId}),
+        };
+        const response = await fetch(`${rte}completed_fitness_goals`, requestOptionsHead);
+        return responseFormat(response, true);
+    } catch (e) {
+        return errorFormat(e);
+    }
+}
+
+export const AddFitnessGoal = async(goalData) => {
+    try {
+        const requestOptionsHead = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify(goalData),
+        };
+        const response = await fetch(`${rte}add_fitness_goal`, requestOptionsHead);
+        return responseFormat(response, false);
+    } catch (e) {
+        return errorFormat(e);
+    }
+}
+
+export const UpdateFitnessGoal = async(goalData) => {
+    try {
+        const requestOptionsHead = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify(goalData),
+        };
+        const response = await fetch(`${rte}update_fitness_goal`, requestOptionsHead);
+        return responseFormat(response, false);
+    } catch (e) {
+        return errorFormat(e);
     }
 }
