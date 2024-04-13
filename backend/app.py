@@ -38,7 +38,7 @@ except (PostgresError, Exception) as connectionErr:
     print("[CONNECTION] ERROR: Connection to the Gym Guru database failed: " + connectionErr)
     exit()
 
-# FUNCTIONS FOR PERFORMING SQL QUERIES
+# FUNCTIONS FOR DEFINING ROUTES
 
 """
 Returns info for all the different subscription models
@@ -121,6 +121,65 @@ def register_member():
         db_conn.rollback()
         # Return response containing thrown error and status code of INTERNAL SERVER ERROR
         return make_response(jsonify({'error_message': str(query_err)}), 500)
+
+
+"""
+Returns all attributes of the member (as well as their account info) matching 
+the provided account username and password.
+If the username and password is invalid, a 404 response is returned
+"""
+@app.route('/login', methods='[POST]')
+def login():
+    print("[LOG] Received request to find member associated with username/password")
+    # Use RealDictCursor to return data as dictionary format
+    cursor = db_conn.cursor(cursor_factory=RealDictCursor)
+    # Get JSON data from received request
+    credentials = json.loads(request.data)
+
+    # Check if username/password exists
+    cursor.execute("SELECT account_id, type FROM account WHERE (username=%s AND password=%s)",
+                   (credentials['username'], credentials['password']))
+    account_info = cursor.fetchone()
+    if len(account_info) == 0:
+        # No tuples returned (i.e. username/password is invalid or account doesn't exist)
+        return make_response(jsonify({'error_message': 'Username/password invalid'}), 404)
+    elif len(account_info) == 1:
+        # Account found, so check if account belongs to member
+        print(f"[LOG] Account exists for username = {credentials['username']} and password = {credentials['password']}")
+        account_type = account_info[0]['type']
+        account_id = account_info[0]['account_id']
+        if account_type == 'member':
+            # Account belongs to member,
+            # so join account and member table on account_id and member_id to get all info for member
+            cursor.execute("SELECT * FROM account JOIN member ON account.account_id = member.member_id WHERE account_id = %s",
+                           (account_id,))
+            user_info = cursor.fetchone()
+        elif account_type == 'trainer':
+            # Account belongs to trainer,
+            # so join account and trainer table on account_id and trainer_id to get all info for trainer
+            cursor.execute(
+                "SELECT * FROM account JOIN trainer ON account.account_id = trainer.trainer_id WHERE account_id = %s",
+                (account_id,))
+            user_info = cursor.fetchone()
+        elif account_type == 'admin':
+            # Account belongs to admin,
+            # so join account and admin table on account_id and admin_id to get all info for admin
+            cursor.execute(
+                "SELECT * FROM account JOIN admin ON account.account_id = admin.admin_id WHERE account_id = %s",
+                (account_id,))
+            user_info = cursor.fetchone()
+        else:
+            print("[ERROR] Unknown account type returned from server")
+            return make_response(jsonify({'error_message': 'Unknown account type returned from server'}), 404)
+
+        # Convert data into JSON format (str) (to convert Decimal type to decimal numbers)
+        json_data = simplejson.dumps(user_info, use_decimal=True)
+        print(f"[LOG] User data converted to JSON str: {json_data}")
+        # Return Response with user info as JSON and OK status
+        return make_response(jsonify(json_data), 200)
+    else:
+        print("[ERROR] Duplicated account found!")
+        return make_response(jsonify({'error_message': 'More than one account exists with provided credentials'}), 404)
 
 
 # Main method
