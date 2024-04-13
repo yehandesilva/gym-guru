@@ -1,14 +1,16 @@
 const rte = "http://localhost:4000/";
 
-const responseFormat = async (response) => {
+const responseFormat = async (response, get=true) => {
     const returnObj = {
         ok: response.ok,
         res: null,
     }
-    if (response.ok) {
-        returnObj.res = JSON.parse(await response.json());
-    } else {
-        returnObj.res = (await response.json()).error_message;
+    if (get) {
+        if (response.ok) {
+            returnObj.res = JSON.parse(await response.json());
+        } else {
+            returnObj.res = (await response.json()).error_message;
+        }
     }
     return returnObj;
 }
@@ -34,7 +36,7 @@ export const RegisterMember = async(memberData) => {
             body: JSON.stringify(memberData),
         };
         const response = await fetch(`${rte}register_member`, requestOptionsHead);
-        return responseFormat(response);
+        return responseFormat(response, false);
     } catch (e) {
         return null;
     }
