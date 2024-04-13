@@ -17,9 +17,6 @@ const Header = ({user, setUser}) => {
                         </Button>
                     </div>
                 </div>
-                <div className="flex ml-6 justify-content-start text-900 text-4xl font-medium mt-6">
-                    <div>Hi,</div><div className='ml-2 text-primary'> {`${user.first_name}`}</div> <div className="ml-1">.</div>
-                </div>
             </div>
         </>
     )
