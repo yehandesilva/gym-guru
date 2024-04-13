@@ -527,7 +527,7 @@ def get_fitness_class_ids():
         member = json.loads(request.data)
         # Select all fitness_class_ids that member is registered in
         cursor.execute("SELECT fitness_class_id FROM fitness_class_member WHERE member_id = %s",
-                       (member['member_id']),)
+                       (member['member_id'],))
         fitness_class_ids = cursor.fetchall()
         print(f"[QUERY] Fitness classes: {fitness_class_ids}")
 
