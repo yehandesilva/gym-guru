@@ -43,7 +43,7 @@ export const RegisterMember = async(memberData) => {
 export const AccountLogin = async() => {
     try {
         const requestOptionsHead = {
-            method: 'GET',
+            method: 'POST',
             headers: { 'Content-Type': 'application/json'},
         };
         const response = await fetch(`${rte}login`, requestOptionsHead);
