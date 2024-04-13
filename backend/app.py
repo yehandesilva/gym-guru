@@ -9,7 +9,7 @@ import simplejson as simplejson
 from flask_cors import CORS, cross_origin
 import psycopg2
 from psycopg2 import Error as PostgresError
-from psycopg2.extras import RealDictCursor
+from psycopg2.extras import RealDictCursor, RealDictRow
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
@@ -145,10 +145,10 @@ def login():
         cursor.execute("SELECT account_id, type FROM account WHERE (username=%s AND password=%s)",
                        (credentials['username'], credentials['password']))
         account_info = cursor.fetchone()
-        if len(account_info) == 0:
+        if account_info is None:
             # No tuples returned (i.e. username/password is invalid or account doesn't exist)
             return make_response(jsonify({'error_message': 'Username/password invalid'}), 404)
-        elif len(account_info) == 1:
+        elif isinstance(account_info, RealDictRow):
             # Account found, so check if account belongs to member
             print(f"[LOG] Account exists for username = {credentials['username']} and password = {credentials['password']}")
             account_type = account_info[0]['type']
@@ -183,6 +183,7 @@ def login():
             # Return Response with user info as JSON and OK status
             return make_response(jsonify(json_data), 200)
         else:
+            # Other possibility is a list of items of type RealDictRow (meaning multiple accounts)
             print("[ERROR] Duplicated account found!")
             return make_response(jsonify({'error_message': 'More than one account exists with provided credentials'}), 404)
 
