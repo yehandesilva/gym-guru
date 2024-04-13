@@ -32,7 +32,7 @@ const Goal = ({fitnessGoal, setModified}) => {
 
     return (
         <>
-            <ul className="flex flex-wrap list-none p-0 m-0 mt-2 p-1 w-full mx-8 justify-content-center">
+            <ul className="flex flex-wrap list-none p-0 m-0 p-1 w-full mx-8 justify-content-center surface-0 border-primary border-1">
                 <li className="flex-column px-2 col-2">
                     <div className="text-500 w-full font-medium">Completed</div>
                     <div className="text-900 w-full mt-2 ">
