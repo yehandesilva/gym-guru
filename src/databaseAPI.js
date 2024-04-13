@@ -1,5 +1,18 @@
 const rte = "http://localhost:4000/";
 
+const responseFormat = async (response) => {
+    const returnObj = {
+        ok: response.ok,
+        res: null,
+    }
+    if (response.ok) {
+        returnObj.res = JSON.parse(await response.json());
+    } else {
+        returnObj.res = (await response.json()).error_message;
+    }
+    return returnObj;
+}
+
 export const GetSubscriptionModels = async() => {
     try {
         const requestOptionsHead = {
@@ -7,10 +20,7 @@ export const GetSubscriptionModels = async() => {
             headers: { 'Content-Type': 'application/json'},
         };
         const response = await fetch(`${rte}subscription_models`, requestOptionsHead);
-        if (response.ok) {
-            return JSON.parse(await response.json());
-        }
-        return null;
+        return responseFormat(response);
     } catch (e) {
         return null;
     }
@@ -24,10 +34,20 @@ export const RegisterMember = async(memberData) => {
             body: JSON.stringify(memberData),
         };
         const response = await fetch(`${rte}register_member`, requestOptionsHead);
-        if (response.ok) {
-            return true;
-        }
-        return (await response.json()).error_message;
+        return responseFormat(response);
+    } catch (e) {
+        return null;
+    }
+}
+
+export const AccountLogin = async() => {
+    try {
+        const requestOptionsHead = {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json'},
+        };
+        const response = await fetch(`${rte}login`, requestOptionsHead);
+        return responseFormat(response);
     } catch (e) {
         return null;
     }

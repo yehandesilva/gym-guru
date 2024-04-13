@@ -7,7 +7,7 @@ import RegisterForm from "./registerForm";
 import {Button} from "primereact/button";
 import {Ripple} from 'primereact/ripple';
 
-const Welcome = () => {
+const Welcome = ({setUser}) => {
 
     const [login, setLogin] = useState(true);
     return (
@@ -33,7 +33,7 @@ const Welcome = () => {
                 <div className='flex justify-content-center mt-4'>
                     {
                         (login) ?
-                            <Login setLogin={setLogin}/>
+                            <Login setUser={setUser} />
                             :
                             <RegisterForm setLogin={setLogin}/>
                     }
