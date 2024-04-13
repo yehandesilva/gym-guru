@@ -754,7 +754,39 @@ def find_matching_trainers():
         return make_response(jsonify({'error_message': str(e)}), 500)
 
 
-# MANAGE AVAILABILITY AND VIEW MEMBERS FOR TRAINER
+# VIEW SESSIONS, MANAGE AVAILABILITY AND VIEW MEMBERS FOR TRAINER
+
+"""
+Returns all info for all sessions associated with the specified trainer.
+"""
+@app.route('/trainer_sessions', methods=['POST'])
+@cross_origin()
+def get_trainer_sessions():
+    print("[LOG] Received request to get all sessions for trainer")
+    # Use RealDictCursor to return data as dictionary format
+    cursor = db_conn.cursor(cursor_factory=RealDictCursor)
+    try:
+        # Get JSON data from received request
+        trainer = json.loads(request.data)
+        # Get info on all fitness classes, including attributes of trainer
+        cursor.execute("SELECT member_id, trainer_id, member.first_name, member.last_name, day "
+                       "FROM session NATURAL JOIN members WHERE trainer_id = %s",
+                       (trainer['trainer_id'],))
+
+        trainer_sessions = cursor.fetchall()
+        print(f"[QUERY] All trainer's sessions: {trainer_sessions}")
+
+        json_data = json.dumps(trainer_sessions)
+        # Return Response with JSON data
+        return jsonify(json_data)
+
+    except (PostgresError, Exception) as e:
+        print(f"[EXCEPTION] {e}")
+        # Reset transaction state
+        db_conn.rollback()
+        # Return response containing thrown error and status code of INTERNAL SERVER ERROR
+        return make_response(jsonify({'error_message': str(e)}), 500)
+
 
 """
 Returns all availabilities that a particular trainer has.
