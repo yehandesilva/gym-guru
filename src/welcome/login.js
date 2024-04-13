@@ -2,7 +2,7 @@ import {useRef, useState} from "react";
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 import { Button } from 'primereact/button';
-import {AccountLogin} from "../databaseAPI";
+import {AccountLogin} from "../api/databaseAPI";
 import {Toast} from "primereact/toast";
 
 
