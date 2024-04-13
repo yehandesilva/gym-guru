@@ -24,6 +24,7 @@ const RegisterForm = () => {
     const [weight, set_weight] = useState();
     const [planDialogVisible, setPlanDialogVisible] = useState(false);
     const [subscription_id, set_subscription_id] = useState(-1);
+    const [card_number, set_card_number] = useState("");
 
     const formComplete = () => {
         return !(first_name !== "" &&
@@ -34,7 +35,8 @@ const RegisterForm = () => {
             password !== "" &&
             height !== null &&
             weight !== null &&
-            subscription_id !== -1
+            subscription_id !== -1 &&
+            card_number !== ""
         )
     }
 
@@ -49,6 +51,7 @@ const RegisterForm = () => {
             height: height,
             weight: weight,
             subscription_id: subscription_id,
+            card_number: card_number,
         }
         const res = await RegisterMember(memberData);
         if (res.ok) {
@@ -78,6 +81,12 @@ const RegisterForm = () => {
             <ConfirmDialog />
             <Dialog header="Subscriptions" visible={planDialogVisible} style={{ width: '50vw' }}  onHide={() => setPlanDialogVisible(false)} closable={true}>
                 <Subscriptions subscription_id={subscription_id} set_subscription_id={set_subscription_id}/>
+                <div className="flex mt-4 justify-content-center">
+                    <FloatLabel>
+                        <InputText value={card_number} onChange={(e) => set_card_number(e.target.value)}/>
+                        <label htmlFor="card_number">Card Number</label>
+                    </FloatLabel>
+                </div>
             </Dialog>
             <div className='grid mt-4 w-5'>
                 <div className='col-6 flex justify-content-center'>
