@@ -151,8 +151,9 @@ def login():
         elif isinstance(account_info, RealDictRow):
             # Account found, so check if account belongs to member
             print(f"[LOG] Account exists for username = {credentials['username']} and password = {credentials['password']}")
-            account_type = account_info[0]['type']
-            account_id = account_info[0]['account_id']
+            account_info = dict(account_info)
+            account_type = account_info['type']
+            account_id = account_info['account_id']
             if account_type == 'member':
                 # Account belongs to member,
                 # so join account and member table on account_id and member_id to get all info for member
@@ -178,7 +179,7 @@ def login():
                 return make_response(jsonify({'error_message': 'Unknown account type returned from server'}), 404)
 
             # Convert data into JSON format (str) (to convert Decimal type to decimal numbers)
-            json_data = simplejson.dumps(user_info, use_decimal=True)
+            json_data = simplejson.dumps(user_info, use_decimal=True, default=str)
             print(f"[LOG] User data converted to JSON str: {json_data}")
             # Return Response with user info as JSON and OK status
             return make_response(jsonify(json_data), 200)
