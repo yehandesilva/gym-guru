@@ -116,7 +116,7 @@ INSERT INTO skill (name) VALUES ('Cardio');
 INSERT INTO skill (name) VALUES ('Legs');
 INSERT INTO skill (name) VALUES ('Upper body');
 
-(INSERT THE FOLLOWING 3 SECTIONS IN SEQUENTIAL ORDER)
+/* (INSERT THE FOLLOWING 3 SECTIONS IN SEQUENTIAL ORDER) */
 /* Trainers */
 INSERT INTO trainer (first_name, last_name) VALUES ('David', 'Smith');
 INSERT INTO trainer (first_name, last_name) VALUES ('Mark', 'Doe');
