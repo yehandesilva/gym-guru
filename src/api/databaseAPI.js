@@ -40,11 +40,12 @@ export const RegisterMember = async(memberData) => {
     }
 }
 
-export const AccountLogin = async() => {
+export const AccountLogin = async(signInData) => {
     try {
         const requestOptionsHead = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify(signInData),
         };
         const response = await fetch(`${rte}login`, requestOptionsHead);
         return responseFormat(response);
