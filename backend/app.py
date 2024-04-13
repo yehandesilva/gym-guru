@@ -195,6 +195,70 @@ def login():
         # Return response containing thrown error and status code of INTERNAL SERVER ERROR
         return make_response(jsonify({'error_message': str(query_err)}), 500)
 
+
+"""
+Updates the member's personal information with the provided info.
+"""
+@app.route('/update_member_info', methods=['POST'])
+@cross_origin()
+def update_member_info():
+    cursor = db_conn.cursor()
+    try:
+        # Get JSON data from received request
+        member = json.loads(request.data)
+        print("[LOG] Received request to update member's personal info")
+
+        # Update the member's personal info
+        cursor.execute("UPDATE member SET "
+                       "first_name = %s, last_name = %s, email = %s, date_of_birth = %s, height = %s, weight = %s, "
+                       "subscription_id = %s, card_number = %s"
+                       "WHERE member_id = %s",
+                       (member['first_name'], member['last_name'], member['email'], member['date_of_birth'], member['height'],
+                        member['weight'], member['subscription_id'], member['card_number'], member['member_id']))
+
+        # Update the member's account info
+        cursor.execute("UPDATE account SET username = %s, password = %s WHERE account_id = %s",
+                       (member['username'], member['password'], member['member_id']))
+        # Commit changes
+        db_conn.commit()
+        # Return OK response
+        return Response(status=200)
+
+    except (PostgresError, psycopg2.IntegrityError, Exception) as query_err:
+        print(f"[QUERY ERROR] {query_err}")
+        # Reset transaction state
+        db_conn.rollback()
+        # Return response containing thrown error and status code of INTERNAL SERVER ERROR
+        return make_response(jsonify({'error_message': str(query_err)}), 500)
+
+
+"""
+Returns all the different skills in the Skill table
+"""
+@app.route('/skills', methods=['GET'])
+@cross_origin()
+def get_skills():
+    print("[LOG] Received request to get all skills")
+    # Use RealDictCursor to return data as dictionary format
+    cursor = db_conn.cursor(cursor_factory=RealDictCursor)
+    try:
+        # Get info on all skills (skill_id and name)
+        cursor.execute("SELECT * FROM skill")
+        skills = cursor.fetchall()
+        print(f"[QUERY] Skills: {skills}")
+
+        json_data = json.dumps(skills)
+        print(f"[LOG] Skill data converted to JSON str: {json_data}")
+        # Return Response with JSON data
+        return jsonify(json_data)
+
+    except (PostgresError, Exception) as query_err:
+        print(f"[QUERY ERROR] {query_err}")
+        # Reset transaction state
+        db_conn.rollback()
+        # Return response containing thrown error and status code of INTERNAL SERVER ERROR
+        return make_response(jsonify({'error_message': str(query_err)}), 500)
+
 # Main method
 if __name__ == '__main__':
     # Run backend server on port 5000 (React app is running on 3000)
