@@ -299,3 +299,59 @@ export const FindMatchingTrainers = async(memberId, days, specializations) => {
         return errorFormat(e);
     }
 }
+
+export const AllTrainerSessions = async(trainerId) => {
+    try {
+        const requestOptionsHead = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify({trainer_id: trainerId}),
+        };
+        const response = await fetch(`${rte}trainer_sessions`, requestOptionsHead);
+        return responseFormat(response, true);
+    } catch (e) {
+        return errorFormat(e);
+    }
+}
+
+export const TrainerAvailabilities = async(trainerId) => {
+    try {
+        const requestOptionsHead = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify({trainer_id: trainerId}),
+        };
+        const response = await fetch(`${rte}trainer_availability`, requestOptionsHead);
+        return responseFormat(response, true);
+    } catch (e) {
+        return errorFormat(e);
+    }
+}
+
+export const AddTrainerAvailability = async(trainerId, day) => {
+    try {
+        const requestOptionsHead = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify({trainer_id: trainerId, day: day}),
+        };
+        const response = await fetch(`${rte}add_availability`, requestOptionsHead);
+        return responseFormat(response, false);
+    } catch (e) {
+        return errorFormat(e);
+    }
+}
+
+export const RemoveTrainerAvailability = async(trainerId, day) => {
+    try {
+        const requestOptionsHead = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify({trainer_id: trainerId, day: day}),
+        };
+        const response = await fetch(`${rte}remove_availability`, requestOptionsHead);
+        return responseFormat(response, false);
+    } catch (e) {
+        return errorFormat(e);
+    }
+}
