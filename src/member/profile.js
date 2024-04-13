@@ -1,4 +1,4 @@
-import Header from "./header";
+import Header from "../header";
 import PersonalInformation from "../welcome/personalInformation";
 import { MultiSelect } from 'primereact/multiselect';
 import {useEffect, useState} from "react";

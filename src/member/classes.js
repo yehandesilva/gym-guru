@@ -1,4 +1,4 @@
-import Header from "./header";
+import Header from "../header";
 import {useEffect, useState} from "react";
 import {GetAllClasses, GetUserClasses, JoinFitnessGlass, LeaveFitnessClass} from "../api/databaseAPI";
 import {DataView} from "primereact/dataview";
@@ -51,7 +51,8 @@ const Classes = ({user, setUser}) => {
                         <div
                             className="text-2xl font-bold">{`Trainer: ${classVal.first_name} ${classVal.last_name}`}</div>
                         <Rating value={classVal.rating} readOnly cancel={false}
-                                offIcon={<div className="pi pi-star"/>}/>
+                                onIcon={<div className={`pi pi-star-fill ${(joined)? "text-primary" : "text-red-400"}`}/>}
+                                offIcon={<div className={`pi pi-star ${(joined)? "text-primary" : "text-red-400"}`}/>}/>
                         <div className="text-lg font-bold mt-2">{`Room #: ${classVal.room_id}`}</div>
                         <div className="text-lg font-bold">{`Date: ${classVal.class_date}`}</div>
                     </div>

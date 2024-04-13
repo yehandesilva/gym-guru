@@ -1,6 +1,6 @@
 import { Button } from 'primereact/button';
 import {Image} from "primereact/image";
-import gymGuruLogo from "../assets/logo.png";
+import gymGuruLogo from "./assets/logo.png";
 import {Link, useLocation} from "react-router-dom";
 
 

@@ -1,11 +1,11 @@
 import {useEffect, useRef, useState} from "react";
 import {Toast} from "primereact/toast";
-import Header from "./header";
+import Header from "../header";
 import {DataView} from "primereact/dataview";
 import {Link} from "react-router-dom";
 
 
-const Home = ({user, setUser}) => {
+const MemberHome = ({user, setUser}) => {
 
     const toast = useRef(null);
     const [pages, setPages] = useState([]);
@@ -80,5 +80,5 @@ const Home = ({user, setUser}) => {
     )
 }
 
-export default Home;
+export default MemberHome;
 

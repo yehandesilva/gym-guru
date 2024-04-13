@@ -16,7 +16,7 @@ const Session = ({sessionVal, setModified}) => {
 
     useEffect(() => {
         setSession(sessionVal);
-    }, []);
+    }, [sessionVal]);
 
     const cancelSession = async() => {
         await CancelSession(session.member_id, session.trainer_id, session.day);
