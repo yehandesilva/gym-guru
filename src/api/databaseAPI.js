@@ -286,12 +286,12 @@ export const CreateSession = async(memberId, trainerId, day) => {
     }
 }
 
-export const FindMatchingTrainers = async(days, specializations) => {
+export const FindMatchingTrainers = async(memberId, days, specializations) => {
     try {
         const requestOptionsHead = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
-            body: JSON.stringify({days: days, specializations:specializations}),
+            body: JSON.stringify({member_id: memberId, days: days, specializations:specializations}),
         };
         const response = await fetch(`${rte}find_matching_trainers`, requestOptionsHead);
         return responseFormat(response, true);

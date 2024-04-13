@@ -1,4 +1,4 @@
-import Header from "./header";
+import Header from "../header";
 import {useEffect, useState} from "react";
 import Session from "./session";
 import {Dialog} from "primereact/dialog";
@@ -25,8 +25,8 @@ const Sessions = ({user, setUser}) => {
     return (
         <>
             <Header setUser={setUser}/>
-            <Dialog header="Session Booking" visible={sessionBookingVisible} style={{ width: '75vw' }}  onHide={() => setSessionBookingVisible(false)} closable={true}>
-                <SessionBooking />
+            <Dialog header="Session Booking" visible={sessionBookingVisible} style={{ width: '90vw' }}  onHide={() => setSessionBookingVisible(false)} closable={true}>
+                <SessionBooking user={user} setModified={setModified}/>
             </Dialog>
             <div className="flex flex-wrap grid justify-content-center mt-8">
                 <div className="text-xl mb-4 text-center w-full text-2xl">Ongoing Sessions</div>

@@ -1,4 +1,4 @@
-import Header from "./header";
+import Header from "../header";
 import {useEffect, useState} from "react";
 import {Button} from "primereact/button";
 import {AddFitnessGoal, GetCompletedGoals, GetUncompletedGoals} from "../api/databaseAPI";
