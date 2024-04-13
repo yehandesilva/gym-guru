@@ -13,6 +13,7 @@ import Home from "./home/home";
 import Profile from "./home/profile"
 import Goals from "./home/goals";
 import Classes from "./home/classes";
+import Sessions from "./home/sessions";
 
 function App() {
 
@@ -30,6 +31,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Home user={user} setUser={setUser}/>} />
                         <Route path="/goals" element={<Goals user={user} setUser={setUser}/>} />
+                        <Route path="/sessions" element={<Sessions user={user} setUser={setUser}/>} />
                         <Route path="/classes" element={<Classes user={user} setUser={setUser}/>} />
                         <Route path="/profile" element={<Profile user={user} setUser={setUser}/>} />
                         <Route path="*" element={<Navigate replace to="/" />} />

@@ -243,3 +243,59 @@ export const LeaveFitnessClass = async(memberId, fitnessClassId) => {
         return errorFormat(e);
     }
 }
+
+export const AllMemberSessions = async(memberId) => {
+    try {
+        const requestOptionsHead = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify({member_id: memberId}),
+        };
+        const response = await fetch(`${rte}member_sessions`, requestOptionsHead);
+        return responseFormat(response, true);
+    } catch (e) {
+        return errorFormat(e);
+    }
+}
+
+export const CancelSession = async(memberId, trainerId, day) => {
+    try {
+        const requestOptionsHead = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify({member_id: memberId, trainer_id: trainerId, day: day}),
+        };
+        const response = await fetch(`${rte}cancel_session`, requestOptionsHead);
+        return responseFormat(response, false);
+    } catch (e) {
+        return errorFormat(e);
+    }
+}
+
+export const CreateSession = async(memberId, trainerId, day) => {
+    try {
+        const requestOptionsHead = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify({member_id: memberId, trainer_id: trainerId, day: day}),
+        };
+        const response = await fetch(`${rte}create_session`, requestOptionsHead);
+        return responseFormat(response, false);
+    } catch (e) {
+        return errorFormat(e);
+    }
+}
+
+export const FindMatchingTrainers = async(days, specializations) => {
+    try {
+        const requestOptionsHead = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify({days: days, specializations:specializations}),
+        };
+        const response = await fetch(`${rte}find_matching_trainers`, requestOptionsHead);
+        return responseFormat(response, true);
+    } catch (e) {
+        return errorFormat(e);
+    }
+}

@@ -707,7 +707,7 @@ def find_matching_trainers():
         # at least one of the provided days, and specializes in at least one of the provided
         # specializations
         cursor.execute("SELECT trainer_id, first_name, last_name, rating, day, name "
-                       "FROM trainer NATURAL JOIN availability NATURAL JOIN specialization NATURAL JOIN skill"
+                       "FROM trainer NATURAL JOIN availability NATURAL JOIN specialization NATURAL JOIN skill "
                        "WHERE (day IN %s AND name IN %s)",
                        (days, specializations,))
         suitable_trainers = cursor.fetchall()
