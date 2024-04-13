@@ -157,7 +157,7 @@ INSERT INTO trainer (first_name, last_name, rating) VALUES ('Mark', 'Doe', 4);
 INSERT INTO availability (trainer_id, day) VALUES (1, 'Monday');
 INSERT INTO availability (trainer_id, day) VALUES (1, 'Wednesday');
 INSERT INTO availability (trainer_id, day) VALUES (2, 'Tuesday');
-INSERT INTO availability (trainer_id, day) VALUES (1, 'Thursday');
+INSERT INTO availability (trainer_id, day) VALUES (2, 'Thursday');
 /* Specializations */
 INSERT INTO specialization (trainer_id, skill_id) VALUES (1, 1);
 INSERT INTO specialization (trainer_id, skill_id) VALUES (1, 4);
