@@ -482,7 +482,122 @@ def update_fitness_goal():
 
 # MANAGE FITNESS CLASSES FOR MEMBER
 
+"""
+Returns all the fitness classes currently available 
+(i.e. attributes of fitness_class and trainer are returned)
+"""
+@app.route('/all_fitness_classes', methods=['GET'])
+@cross_origin()
+def get_all_fitness_classes():
+    print("[LOG] Received request to get all fitness classes")
+    # Use RealDictCursor to return data as dictionary format
+    cursor = db_conn.cursor(cursor_factory=RealDictCursor)
+    try:
+        # Get info on all fitness classes, including attributes of trainer
+        cursor.execute("SELECT * FROM fitness_class NATURAL JOIN trainer")
+        all_fitness_classes = cursor.fetchall()
+        print(f"[QUERY] Fitness classes: {all_fitness_classes}")
 
+        # Convert data into JSON format (str) (to convert Decimal type and Date type)
+        json_data = simplejson.dumps(all_fitness_classes, use_decimal=True, default=str)
+        print(f"[LOG] All fitness classes to JSON str: {json_data}")
+        # Return Response with JSON data
+        return jsonify(json_data)
+
+    except (PostgresError, Exception) as e:
+        print(f"[EXCEPTION] {e}")
+        # Reset transaction state
+        db_conn.rollback()
+        # Return response containing thrown error and status code of INTERNAL SERVER ERROR
+        return make_response(jsonify({'error_message': str(e)}), 500)
+
+
+"""
+Returns all the fitness_class_ids that a particular member 
+is part of.
+"""
+@app.route('/fitness_class_ids', methods=['POST'])
+@cross_origin()
+def get_fitness_class_ids():
+    print("[LOG] Received request to get all fitness_class_ids that member is part of")
+    # Use RealDictCursor to return data as dictionary format
+    cursor = db_conn.cursor(cursor_factory=RealDictCursor)
+    try:
+        # Get JSON data from received request
+        member = json.loads(request.data)
+        # Select all fitness_class_ids that member is registered in
+        cursor.execute("SELECT fitness_class_id FROM fitness_class_member WHERE member_id = %s",
+                       (member['member_id']),)
+        fitness_class_ids = cursor.fetchall()
+        print(f"[QUERY] Fitness classes: {fitness_class_ids}")
+
+        json_data = json.dumps(fitness_class_ids)
+        print(f"[LOG] All fitness_class_ids to JSON str: {json_data}")
+        # Return Response with JSON data
+        return jsonify(json_data)
+
+    except (PostgresError, Exception) as e:
+        print(f"[EXCEPTION] {e}")
+        # Reset transaction state
+        db_conn.rollback()
+        # Return response containing thrown error and status code of INTERNAL SERVER ERROR
+        return make_response(jsonify({'error_message': str(e)}), 500)
+
+
+"""
+Registers a member in a particular fitness class.
+"""
+@app.route('/register_for_fitness_class', methods=['POST'])
+@cross_origin()
+def register_for_fitness_class():
+    print("[LOG] Received request to register member in fitness class")
+    # Use RealDictCursor to return data as dictionary format
+    cursor = db_conn.cursor()
+    try:
+        # Get JSON data from received request
+        member = json.loads(request.data)
+        # Register member in fitness class
+        cursor.execute("INSERT INTO fitness_class_member (fitness_class_id, member_id) VALUES (%s, %s)",
+                       (member['fitness_class_id'], member['member_id'],))
+        # Commit changes
+        db_conn.commit()
+        # Return OK response
+        return Response(status=200)
+
+    except (PostgresError, Exception) as e:
+        print(f"[EXCEPTION] {e}")
+        # Reset transaction state
+        db_conn.rollback()
+        # Return response containing thrown error and status code of INTERNAL SERVER ERROR
+        return make_response(jsonify({'error_message': str(e)}), 500)
+
+
+"""
+De-registers a member in a particular fitness class.
+"""
+@app.route('/deregister_in_fitness_class', methods=['POST'])
+@cross_origin()
+def deregister_in_fitness_class():
+    print("[LOG] Received request to de-register member in a fitness class")
+    # Use RealDictCursor to return data as dictionary format
+    cursor = db_conn.cursor()
+    try:
+        # Get JSON data from received request
+        member = json.loads(request.data)
+        # De-register member in fitness class
+        cursor.execute("DELETE FROM fitness_class_member WHERE (fitness_class_id = %s AND member_id = %s)",
+                       (member['fitness_class_id'], member['member_id'],))
+        # Commit changes
+        db_conn.commit()
+        # Return OK response
+        return Response(status=200)
+
+    except (PostgresError, Exception) as e:
+        print(f"[EXCEPTION] {e}")
+        # Reset transaction state
+        db_conn.rollback()
+        # Return response containing thrown error and status code of INTERNAL SERVER ERROR
+        return make_response(jsonify({'error_message': str(e)}), 500)
 
 
 # Main method
