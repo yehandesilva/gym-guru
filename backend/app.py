@@ -316,6 +316,36 @@ def delete_interest():
         return make_response(jsonify({'error_message': str(query_err)}), 500)
 
 
+"""
+Returns all the interest names associated with a particular member.
+"""
+@app.route('/interest_names', methods=['GET'])
+@cross_origin()
+def get_interest_names():
+    print("[LOG] Received request to get all interested associated with member")
+    # Use RealDictCursor to return data as dictionary format
+    cursor = db_conn.cursor(cursor_factory=RealDictCursor)
+    try:
+        # Get JSON data from received request
+        member = json.loads(request.data)
+        # Get info on all interests that member has
+        cursor.execute("SELECT skill.name FROM interest JOIN skill ON interest.skill_id = skill.skill_id WHERE member_id = %s",
+                       (member['member_id'],))
+        interests_names = cursor.fetchall()
+        print(f"[QUERY] Interest names for member: {interests_names}")
+
+        json_data = json.dumps(interests_names)
+        print(f"[LOG] Interest names converted to JSON str: {json_data}")
+        # Return Response with JSON data
+        return jsonify(json_data)
+
+    except (PostgresError, Exception) as query_err:
+        print(f"[QUERY ERROR] {query_err}")
+        # Reset transaction state
+        db_conn.rollback()
+        # Return response containing thrown error and status code of INTERNAL SERVER ERROR
+        return make_response(jsonify({'error_message': str(query_err)}), 500)
+
 
 # Main method
 if __name__ == '__main__':
