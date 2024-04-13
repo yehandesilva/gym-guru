@@ -64,6 +64,8 @@ def get_subscription_models():
 
     except (PostgresError, Exception) as query_err:
         print(f"[QUERY ERROR] {query_err}")
+        # Reset transaction state
+        db_conn.rollback()
         # Return response containing thrown error and status code of INTERNAL SERVER ERROR
         return make_response(jsonify({'error_message': str(query_err)}), 500)
 
@@ -115,6 +117,8 @@ def register_member():
         return Response(status=200)
     except (PostgresError, Exception) as query_err:
         print(f"[QUERY ERROR] {query_err}")
+        # Reset transaction state
+        db_conn.rollback()
         # Return response containing thrown error and status code of INTERNAL SERVER ERROR
         return make_response(jsonify({'error_message': str(query_err)}), 500)
 
