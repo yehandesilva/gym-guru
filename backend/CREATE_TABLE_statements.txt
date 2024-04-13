@@ -116,10 +116,10 @@ INSERT INTO skill (name) VALUES ('Cardio');
 INSERT INTO skill (name) VALUES ('Legs');
 INSERT INTO skill (name) VALUES ('Upper body');
 
-(INSERT THE FOLLOWING 3 SECTIONS IN SEQUENTIAL ORDER)
+/* (INSERT THE FOLLOWING 3 SECTIONS IN SEQUENTIAL ORDER) */
 /* Trainers */
-INSERT INTO trainer (first_name, last_name) VALUES ('David', 'Smith');
-INSERT INTO trainer (first_name, last_name) VALUES ('Mark', 'Doe');
+INSERT INTO trainer (first_name, last_name, rating) VALUES ('David', 'Smith', 5);
+INSERT INTO trainer (first_name, last_name, rating) VALUES ('Mark', 'Doe', 4);
 
 /* Rooms */
 INSERT INTO room (type) VALUES ('Weight room');
