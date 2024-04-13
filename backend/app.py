@@ -754,6 +754,130 @@ def find_matching_trainers():
         return make_response(jsonify({'error_message': str(e)}), 500)
 
 
+# MANAGE AVAILABILITY AND VIEW MEMBERS FOR TRAINER
+
+"""
+Returns all availabilities that a particular trainer has.
+"""
+@app.route('/trainer_availability', methods=['POST'])
+@cross_origin()
+def get_trainer_availability():
+    print("[LOG] Received request to get all availabilities for trainer")
+    # Use RealDictCursor to return data as dictionary format
+    cursor = db_conn.cursor(cursor_factory=RealDictCursor)
+    try:
+        # Get JSON data from received request
+        trainer = json.loads(request.data)
+        # Get info on all fitness classes, including attributes of trainer
+        cursor.execute("SELECT day FROM availability WHERE trainer_id = %s", (trainer['trainer_id'],))
+        trainer_availabilities = cursor.fetchall()
+        print(f"[QUERY] All availabilities for trainer: {trainer_availabilities}")
+
+        json_data = json.dumps(trainer_availabilities)
+        # Return Response with JSON data
+        return jsonify(json_data)
+
+    except (PostgresError, Exception) as e:
+        print(f"[EXCEPTION] {e}")
+        # Reset transaction state
+        db_conn.rollback()
+        # Return response containing thrown error and status code of INTERNAL SERVER ERROR
+        return make_response(jsonify({'error_message': str(e)}), 500)
+
+
+"""
+Adds an availability for a particular trainer.
+"""
+@app.route('/add_availability', methods=['POST'])
+@cross_origin()
+def add_availability():
+    print("[LOG] Received request to add availability for trainer")
+    cursor = db_conn.cursor()
+    try:
+        # Get JSON data from received request
+        trainer = json.loads(request.data)
+        # Insert new availability for trainer
+        cursor.execute("INSERT INTO availability (trainer_id, day) VALUES (%s, %s)",
+                       (trainer['trainer_id'], trainer['day']))
+        # Commit changes
+        db_conn.commit()
+        # Return OK response
+        return Response(status=200)
+
+    except (PostgresError, Exception) as e:
+        print(f"[EXCEPTION] {e}")
+        # Reset transaction state
+        db_conn.rollback()
+        # Return response containing thrown error and status code of INTERNAL SERVER ERROR
+        return make_response(jsonify({'error_message': str(e)}), 500)
+
+
+"""
+Removes an availability for a particular trainer.
+"""
+@app.route('/remove_availability', methods=['POST'])
+@cross_origin()
+def remove_availability():
+    print("[LOG] Received request to remove availability for trainer")
+    cursor = db_conn.cursor()
+    try:
+        # Get JSON data from received request
+        trainer = json.loads(request.data)
+        # Insert new availability for trainer
+        cursor.execute("DELETE FROM availability WHERE (trainer_id = %s AND availability = %s)",
+                       (trainer['trainer_id'], trainer['day']))
+        # Commit changes
+        db_conn.commit()
+        # Return OK response
+        return Response(status=200)
+
+    except (PostgresError, Exception) as e:
+        print(f"[EXCEPTION] {e}")
+        # Reset transaction state
+        db_conn.rollback()
+        # Return response containing thrown error and status code of INTERNAL SERVER ERROR
+        return make_response(jsonify({'error_message': str(e)}), 500)
+
+
+"""
+Returns info on the member associated with provided first name and last name.
+"""
+@app.route('/get_members', methods=['POST'])
+@cross_origin()
+def get_members():
+    print("[LOG] Received request to get info on all members")
+    # Use RealDictCursor to return data as dictionary format
+    cursor = db_conn.cursor(cursor_factory=RealDictCursor)
+    try:
+        # Get JSON data from received request
+        member = json.loads(request.data)
+
+        # Check if first name and last name were specified
+        if member['first_name'] != '' and member['last_name'] != '':
+            # If so, return all members (hide payment related info) matching the first name and last name
+            cursor.execute("SELECT member_id, first_name, last_name, email, date_of_birth, height, weight"
+                           " FROM member WHERE (first_name = %s AND last_name = %s",
+                           (member['first_name'], member['last_name']))
+        else:
+            # Otherwise, return all members (hide payment related info)
+            cursor.execute("SELECT member_id, first_name, last_name, email, date_of_birth, height, weight FROM member")
+
+        members = cursor.fetchall()
+        print(f"[QUERY] Members found from search query: {members}")
+
+        # Convert to JSON str (convert Decimal and Date type)
+        json_data = simplejson.dumps(members, use_decimal=True, default=str)
+        # Return Response with JSON data
+        return jsonify(json_data)
+
+    except (PostgresError, Exception) as e:
+        print(f"[EXCEPTION] {e}")
+        # Reset transaction state
+        db_conn.rollback()
+        # Return response containing thrown error and status code of INTERNAL SERVER ERROR
+        return make_response(jsonify({'error_message': str(e)}), 500)
+
+
 # Main method
 if __name__ == '__main__':
     # Run backend server on port 5000 (React app is running on 3000)
