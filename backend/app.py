@@ -357,7 +357,7 @@ def get_interest_names():
 """
 Returns all the uncompleted fitness goals for a specific member.
 """
-@app.route('/uncompleted_fitness_goals', methods=['GET'])
+@app.route('/uncompleted_fitness_goals', methods=['POST'])
 @cross_origin()
 def get_uncompleted_fitness_goals():
     print("[LOG] Received request to get all uncompleted fitness goals for member")
@@ -390,7 +390,7 @@ def get_uncompleted_fitness_goals():
 """
 Returns all the completed fitness goals for a specific member.
 """
-@app.route('/completed_fitness_goals', methods=['GET'])
+@app.route('/completed_fitness_goals', methods=['POST'])
 @cross_origin()
 def completed_fitness_goals():
     print("[LOG] Received request to get all completed fitness goals for member")
@@ -411,6 +411,36 @@ def completed_fitness_goals():
         print(f"[LOG] Completed fitness goals converted to JSON str: {json_data}")
         # Return Response with JSON data
         return jsonify(json_data)
+
+    except (PostgresError, Exception) as e:
+        print(f"[EXCEPTION] {e}")
+        # Reset transaction state
+        db_conn.rollback()
+        # Return response containing thrown error and status code of INTERNAL SERVER ERROR
+        return make_response(jsonify({'error_message': str(e)}), 500)
+
+
+"""
+Adds a new fitness_goal for a specific member.
+"""
+@app.route('/add_fitness_goal', methods=['POST'])
+@cross_origin()
+def add_fitness_goal():
+    print("[LOG] Received request to add new fitness goal for member")
+    # Use RealDictCursor to return data as dictionary format
+    cursor = db_conn.cursor()
+    try:
+        # Get JSON data from received request
+        fitness_goal = json.loads(request.data)
+        # Insert fitness goal for specified member corresponding to the provided fitness_goal_id
+        cursor.execute("INSERT INTO fitness_goal (member_id, name, end_date, target_goal, current_value, completed) "
+                       "VALUES (%s, %s, %s, %s, %s, %s)",
+                       (fitness_goal['member_id'], fitness_goal['name'], fitness_goal['end_date'], fitness_goal['target_goal'],
+                        fitness_goal['current_value'], fitness_goal['completed']))
+        # Commit change
+        db_conn.commit()
+        # Return OK response
+        return Response(status=200)
 
     except (PostgresError, Exception) as e:
         print(f"[EXCEPTION] {e}")
