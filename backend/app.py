@@ -259,6 +259,64 @@ def get_skills():
         # Return response containing thrown error and status code of INTERNAL SERVER ERROR
         return make_response(jsonify({'error_message': str(query_err)}), 500)
 
+
+"""
+Adds a new interest for a particular member.
+"""
+@app.route('/add_interest', methods=['POST'])
+@cross_origin()
+def add_interest():
+    cursor = db_conn.cursor()
+    try:
+        # Get JSON data from received request
+        interest = json.loads(request.data)
+        print("[LOG] Received request to add new interest for member")
+
+        # Update the member's personal info
+        cursor.execute("INSERT INTO interest (member_id, skill_id) VALUES (%s, %s)",
+                       (interest['member_id'], interest['skill_id']))
+        # Commit changes
+        db_conn.commit()
+        # Return OK response
+        return Response(status=200)
+
+    except (PostgresError, psycopg2.IntegrityError, Exception) as query_err:
+        print(f"[QUERY ERROR] {query_err}")
+        # Reset transaction state
+        db_conn.rollback()
+        # Return response containing thrown error and status code of INTERNAL SERVER ERROR
+        return make_response(jsonify({'error_message': str(query_err)}), 500)
+
+
+"""
+Removes/deletes an interest for a particular member.
+"""
+@app.route('/delete_interest', methods=['POST'])
+@cross_origin()
+def delete_interest():
+    cursor = db_conn.cursor()
+    try:
+        # Get JSON data from received request
+        interest = json.loads(request.data)
+        print("[LOG] Received request to delete interest for member")
+
+        # Update the member's personal info
+        cursor.execute("DELETE FROM interest WHERE (member_id = %s AND skill_id = %s)",
+                       (interest['member_id'], interest['skill_id']))
+        # Commit changes
+        db_conn.commit()
+        # Return OK response
+        return Response(status=200)
+
+    except (PostgresError, psycopg2.IntegrityError, Exception) as query_err:
+        print(f"[QUERY ERROR] {query_err}")
+        # Reset transaction state
+        db_conn.rollback()
+        # Return response containing thrown error and status code of INTERNAL SERVER ERROR
+        return make_response(jsonify({'error_message': str(query_err)}), 500)
+
+
+
 # Main method
 if __name__ == '__main__':
     # Run backend server on port 5000 (React app is running on 3000)

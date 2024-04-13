@@ -37,9 +37,19 @@ CREATE TABLE IF NOT EXISTS member (
 
 /* Create table to store skills */
 CREATE TABLE IF NOT EXISTS skill (
-	skill_id SERIAL NOT NULL,
-    name VARCHAR(20) NOT NULL,
-	PRIMARY KEY (skill_id, name)
+	skill_id SERIAL PRIMARY KEY,
+    name VARCHAR(20) NOT NULL
+);
+
+/* Create table to store members' interests*/
+CREATE TABLE IF NOT EXISTS interest (
+	member_id INT NOT NULL,
+	skill_id INT NOT NULL,
+	PRIMARY KEY (member_id, skill_id),
+	FOREIGN KEY (member_id)
+		REFERENCES member (member_id),
+	FOREIGN KEY (skill_id)
+		REFERENCES skill (skill_id)
 );
 
 
