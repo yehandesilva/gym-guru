@@ -13,7 +13,6 @@ const Welcome = ({setUser}) => {
     return (
         <div className='flex mt-8 justify-content-center align-content-center'>
             <div className='mt-8'>
-                {/* Gym Guru Logo and welcome text */}
                 <div className='flex justify-content-center'>
                     <Image src={gymGuruLogo} alt="Image" width="350"/>
                 </div>
