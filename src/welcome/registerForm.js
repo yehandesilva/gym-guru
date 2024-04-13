@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useRef, useState} from "react";
 import {InputText} from "primereact/inputtext";
 import {Button} from "primereact/button";
 import {FloatLabel} from "primereact/floatlabel";
@@ -8,9 +8,12 @@ import { Dialog } from 'primereact/dialog';
 import Subscriptions from "../subscriptions";
 import {RegisterMember} from "../databaseAPI";
 import {Password} from "primereact/password";
+import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
+import { Toast } from 'primereact/toast';
 
 const RegisterForm = () => {
 
+    const toast = useRef(null);
     const [first_name, set_first_name] = useState("");
     const [last_name, set_last_name] = useState("");
     const [email, set_email] = useState("");
@@ -40,18 +43,39 @@ const RegisterForm = () => {
             first_name: first_name,
             last_name: last_name,
             email: email,
-            date_of_birth: date_of_birth.toDateString(),
+            date_of_birth: date_of_birth,
             username: username,
             password: password,
             height: height,
             weight: weight,
             subscription_id: subscription_id,
         }
-        await RegisterMember(memberData);
+        const res = await RegisterMember(memberData);
+        if (res === true) {
+            toast.current.show({ severity: 'info', summary: 'Success', detail: 'You have registered', life: 3000 });
+        } else {
+            toast.current.show({ severity: 'warn', summary: 'Failed', detail: res, life: 3000 });
+        }
+    }
+
+    const confirmRegistration = () => {
+        confirmDialog({
+            message: 'Are you sure you want to proceed?',
+            header: 'Confirmation',
+            icon: 'pi pi-exclamation-triangle',
+            defaultFocus: 'accept',
+            accept,
+        });
+    };
+
+    const accept = async () => {
+        await registerUser();
     }
 
     return (
         <>
+            <Toast ref={toast} />
+            <ConfirmDialog />
             <Dialog header="Subscriptions" visible={planDialogVisible} style={{ width: '50vw' }}  onHide={() => setPlanDialogVisible(false)} closable={true}>
                 <Subscriptions subscription_id={subscription_id} set_subscription_id={set_subscription_id}/>
             </Dialog>
@@ -112,7 +136,7 @@ const RegisterForm = () => {
                 </div>
                 <div className='col-12 flex justify-content-center mt-2'>
                     <Button className='border-round-2xl border-primary text-900 font-bold' label="Register" outlined
-                            disabled={formComplete()} onClick={() => registerUser()}/>
+                            disabled={formComplete()} onClick={() => confirmRegistration()}/>
                 </div>
             </div>
         </>

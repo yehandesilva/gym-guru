@@ -1,11 +1,11 @@
 import gymGuruLogo from "../assets/logo.png";
 
 import {useState} from "react";
-import { Image } from 'primereact/image';
+import {Image} from 'primereact/image';
 import Login from './login';
 import RegisterForm from "./registerForm";
 import {Button} from "primereact/button";
-import { Ripple } from 'primereact/ripple';
+import {Ripple} from 'primereact/ripple';
 
 const Welcome = () => {
 

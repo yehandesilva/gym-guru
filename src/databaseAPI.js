@@ -25,9 +25,9 @@ export const RegisterMember = async(memberData) => {
         };
         const response = await fetch(`${rte}register_member`, requestOptionsHead);
         if (response.ok) {
-            return JSON.parse(await response.json());
+            return true;
         }
-        return null;
+        return (await response.json()).error_message;
     } catch (e) {
         return null;
     }

@@ -115,7 +115,7 @@ def register_member():
         db_conn.commit()
         # Return response as OK
         return Response(status=200)
-    except (PostgresError, Exception) as query_err:
+    except (PostgresError, psycopg2.IntegrityError, Exception) as query_err:
         print(f"[QUERY ERROR] {query_err}")
         # Reset transaction state
         db_conn.rollback()
