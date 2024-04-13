@@ -270,6 +270,9 @@ def add_interest():
     try:
         # Get JSON data from received request
         interest = json.loads(request.data)
+        print(interest)
+        print(interest['member_id'])
+        print(interest['skill_id'])
         print("[LOG] Received request to add new interest for member")
 
         # Update the member's personal info
@@ -319,7 +322,7 @@ def delete_interest():
 """
 Returns all the interest names associated with a particular member.
 """
-@app.route('/interest_names', methods=['GET'])
+@app.route('/interest_names', methods=['POST'])
 @cross_origin()
 def get_interest_names():
     print("[LOG] Received request to get all interested associated with member")

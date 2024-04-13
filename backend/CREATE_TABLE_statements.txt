@@ -1,4 +1,6 @@
 /* Drop tables if they exist already */
+DROP TABLE IF EXISTS Interest;
+DROP TABLE IF EXISTS Skill;
 DROP TABLE IF EXISTS Member;
 DROP TABLE IF EXISTS Subscription;
 DROP TABLE IF EXISTS Account;

@@ -11,7 +11,7 @@ import {Password} from "primereact/password";
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { Toast } from 'primereact/toast';
 
-const RegisterForm = ({user, setUser, update}) => {
+const PersonalInformation = ({user, setUser, update}) => {
 
     const toast = useRef(null);
     const [first_name, set_first_name] = useState("");
@@ -179,4 +179,4 @@ const RegisterForm = ({user, setUser, update}) => {
     )
 }
 
-export default RegisterForm;
+export default PersonalInformation;

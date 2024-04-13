@@ -3,7 +3,7 @@ import gymGuruLogo from "../assets/logo.png";
 import {useState} from "react";
 import {Image} from 'primereact/image';
 import Login from './login';
-import RegisterForm from "./registerForm";
+import PersonalInformation from "./personalInformation";
 import {Button} from "primereact/button";
 import {Ripple} from 'primereact/ripple';
 
@@ -34,7 +34,7 @@ const Welcome = ({user, setUser}) => {
                         (login) ?
                             <Login setUser={setUser} />
                             :
-                            <RegisterForm user={user} setUser={setUser} update={false}/>
+                            <PersonalInformation user={user} setUser={setUser} update={false}/>
                     }
                 </div>
             </div>
