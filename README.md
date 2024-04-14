@@ -17,6 +17,6 @@ password = "postgres"
 host = "localhost"
 port = 5432
 ```
-2. Navigate to gym-guru/backend/app.py and run main program to start backend
-3. Run command ```npm install``` to install all necessary dependancies
-4. Run command ```npm start``` to start the front end
+2. Navigate to gym-guru/backend/app.py and run main program to start backend. Before starting the backend, ensure that all the dependencies listed in backend/requirements.txt have been installed. To do this, the following command can be run (cd into the backend folder first): ```pip3 install -r requirements.txt```
+3. Run command ```npm install``` (in project's directory) to install all necessary dependancies
+4. Run command ```npm start``` (in project's directory) to start the front end
