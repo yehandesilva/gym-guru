@@ -91,42 +91,42 @@ VALUES (7, 'Daniel', 'Lowry', 'daniel@email.com', '2000-04-14', 142.6, 55.0, '20
 
 /* Create interests for members */
 /* George */
-INSERT INTO interest (member_id, skill_id) VALUES (1, 1);
-INSERT INTO interest (member_id, skill_id) VALUES (1, 5);
+INSERT INTO interest (member_id, skill_id) VALUES (5, 1);
+INSERT INTO interest (member_id, skill_id) VALUES (5, 5);
 /* Emma */
-INSERT INTO interest (member_id, skill_id) VALUES (2, 1);
-INSERT INTO interest (member_id, skill_id) VALUES (2, 5);
-INSERT INTO interest (member_id, skill_id) VALUES (2, 6);
+INSERT INTO interest (member_id, skill_id) VALUES (6, 1);
+INSERT INTO interest (member_id, skill_id) VALUES (6, 5);
+INSERT INTO interest (member_id, skill_id) VALUES (6, 6);
 /* Daniel */
-INSERT INTO interest (member_id, skill_id) VALUES (3, 1);
-INSERT INTO interest (member_id, skill_id) VALUES (3, 3);
-INSERT INTO interest (member_id, skill_id) VALUES (3, 4);
+INSERT INTO interest (member_id, skill_id) VALUES (7, 1);
+INSERT INTO interest (member_id, skill_id) VALUES (7, 3);
+INSERT INTO interest (member_id, skill_id) VALUES (7, 4);
 
 /* Create fitness goals for members */
 /* George */
 INSERT INTO fitness_goal (member_id, name, end_date, target_goal, current_value, completed)
-VALUES (1, 'Burn calories', '2024-05-13', 200.0, 0.0, 'false');
+VALUES (5, 'Burn calories', '2024-05-13', 200.0, 0.0, 'false');
 /* Emma */
 INSERT INTO fitness_goal (member_id, name, end_date, target_goal, current_value, completed)
-VALUES (2, 'Cardio (steps)', '2024-05-13', 1500.0, 1500.0, 'true');
+VALUES (6, 'Cardio (steps)', '2024-05-13', 1500.0, 1500.0, 'true');
 /* Daniel */
 INSERT INTO fitness_goal (member_id, name, end_date, target_goal, current_value, completed)
-VALUES (3, 'Lose weight', '2024-07-10', 5.5, 0.5, 'false');
+VALUES (7, 'Lose weight', '2024-07-10', 5.5, 0.5, 'false');
 
 /* Add members to fitness classes */
 /* George */
-INSERT INTO fitness_class_member (fitness_class_id, member_id) VALUES (1, 1);
-INSERT INTO fitness_class_member (fitness_class_id, member_id) VALUES (4, 1);
+INSERT INTO fitness_class_member (fitness_class_id, member_id) VALUES (1, 5);
+INSERT INTO fitness_class_member (fitness_class_id, member_id) VALUES (4, 5);
 /* Emma */
-INSERT INTO fitness_class_member (fitness_class_id, member_id) VALUES (2, 2);
+INSERT INTO fitness_class_member (fitness_class_id, member_id) VALUES (2, 6);
 /* Daniel */
-INSERT INTO fitness_class_member (fitness_class_id, member_id) VALUES (3, 3);
+INSERT INTO fitness_class_member (fitness_class_id, member_id) VALUES (3, 7);
 
 /* Book sessions for members */
 /* George */
-INSERT INTO session (member_id, trainer_id, day) VALUES (1, 3, '2024-05-16');
+INSERT INTO session (member_id, trainer_id, day) VALUES (5, 3, '2024-05-16');
 /* Emma */
-INSERT INTO session (member_id, trainer_id, day) VALUES (2, 3, '2024-05-12');
+INSERT INTO session (member_id, trainer_id, day) VALUES (6, 3, '2024-05-12');
 /* Daniel */
-INSERT INTO session (member_id, trainer_id, day) VALUES (3, 3, '2024-05-10');
-INSERT INTO session (member_id, trainer_id, day) VALUES (3, 4, '2024-05-12');
+INSERT INTO session (member_id, trainer_id, day) VALUES (7, 3, '2024-05-10');
+INSERT INTO session (member_id, trainer_id, day) VALUES (7, 4, '2024-05-12');
