@@ -24,7 +24,7 @@ const SearchMembers = ({user, setUser}) => {
     }, [modified]);
 
     const onSearch = () => {
-        setModified((prevState) => (prevState + 1) % 2)
+        setModified((prevState) => (prevState + 1) % 2);
     }
 
     return (

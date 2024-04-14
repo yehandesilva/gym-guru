@@ -17,6 +17,7 @@ import Sessions from "./member/sessions";
 import TrainerHome from "./trainer/trainerHome";
 import TrainerSessions from "./trainer/trainerSessions";
 import SearchMembers from "./trainer/searchMembers";
+import Specializations from "./trainer/specializations";
 
 function App() {
 
@@ -45,6 +46,7 @@ function App() {
                             <Route path="/" element={<TrainerHome user={user} setUser={setUser}/>} />
                             <Route path="/searchMembers" element={<SearchMembers user={user} setUser={setUser}/>} />
                             <Route path="/trainerSessions" element={<TrainerSessions user={user} setUser={setUser}/>} />
+                            <Route path="/specializations" element={<Specializations user={user} setUser={setUser}/>} />
                             <Route path="*" element={<Navigate replace to="/" />} />
                         </Routes>
             }

@@ -81,13 +81,13 @@ INSERT INTO account (username, password, type) VALUES ('daniel90', 'daniel1234',
 
 /* Create Members using their account_id from insertions above */
 INSERT INTO member (member_id, first_name, last_name, email, date_of_birth, height, weight, next_pay_date, subscription_id, card_number)
-VALUES (1, 'George', 'Davidson', 'george@email.com', '1990-01-25', 175.5, 65.2, '2024-05-13', 1, '12345678');
+VALUES (5, 'George', 'Davidson', 'george@email.com', '1990-01-25', 175.5, 65.2, '2024-05-13', 1, '12345678');
 
 INSERT INTO member (member_id, first_name, last_name, email, date_of_birth, height, weight, next_pay_date, subscription_id, card_number)
-VALUES (2, 'Emma', 'McDaniels', 'emma@email.com', '1995-04-14', 175.5, 70.7, '2024-05-13', 1, '12345678');
+VALUES (6, 'Emma', 'McDaniels', 'emma@email.com', '1995-04-14', 175.5, 70.7, '2024-05-13', 1, '12345678');
 
 INSERT INTO member (member_id, first_name, last_name, email, date_of_birth, height, weight, next_pay_date, subscription_id, card_number)
-VALUES (3, 'Daniel', 'Lowry', 'daniel@email.com', '2000-04-14', 142.6, 55.0, '2025-04-13', 2, '12345678');
+VALUES (7, 'Daniel', 'Lowry', 'daniel@email.com', '2000-04-14', 142.6, 55.0, '2025-04-13', 2, '12345678');
 
 /* Create interests for members */
 /* George */
@@ -98,9 +98,9 @@ INSERT INTO interest (member_id, skill_id) VALUES (2, 1);
 INSERT INTO interest (member_id, skill_id) VALUES (2, 5);
 INSERT INTO interest (member_id, skill_id) VALUES (2, 6);
 /* Daniel */
-INSERT INTO interest (member_id, skill_id) VALUES (1, 1);
-INSERT INTO interest (member_id, skill_id) VALUES (1, 3);
-INSERT INTO interest (member_id, skill_id) VALUES (1, 4);
+INSERT INTO interest (member_id, skill_id) VALUES (3, 1);
+INSERT INTO interest (member_id, skill_id) VALUES (3, 3);
+INSERT INTO interest (member_id, skill_id) VALUES (3, 4);
 
 /* Create fitness goals for members */
 /* George */

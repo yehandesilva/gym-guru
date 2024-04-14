@@ -177,7 +177,6 @@ def login():
             else:
                 print("[ERROR] Unknown account type returned from server")
                 return make_response(jsonify({'error_message': 'Unknown account type returned from server'}), 404)
-
             # Convert data into JSON format (str) (to convert Decimal type and Date type)
             json_data = simplejson.dumps(user_info, use_decimal=True, default=str)
             print(f"[LOG] User data converted to JSON str: {json_data}")

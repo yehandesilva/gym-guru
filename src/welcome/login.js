@@ -21,6 +21,7 @@ const Login = ({setUser}) => {
         if (res.ok) {
             toast.current.show({ severity: 'info', summary: 'Success', detail: 'Logged In', life: 3000 });
             setUser(res.res);
+            console.log(res.res)
         } else {
             toast.current.show({ severity: 'warn', summary: 'Unable to login', detail: res.res, life: 3000 });
         }

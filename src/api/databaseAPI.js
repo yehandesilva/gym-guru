@@ -378,3 +378,45 @@ export const SearchSpecifiedMembers = async(firstName, lastName) => {
     }
 }
 
+export const GetTrainerSpecializations = async(trainerId) => {
+    try {
+        const requestOptionsHead = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify({trainer_id: trainerId}),
+        };
+        const response = await fetch(`${rte}trainer_specializations`, requestOptionsHead);
+        return responseFormat(response, true);
+    } catch (e) {
+        return errorFormat(e);
+    }
+}
+
+export const AddTrainerSpecialization = async(trainerId, skillId) => {
+    try {
+        const requestOptionsHead = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify({trainer_id: trainerId, skill_id: skillId}),
+        };
+        const response = await fetch(`${rte}add_specialization`, requestOptionsHead);
+        return responseFormat(response, false);
+    } catch (e) {
+        return errorFormat(e);
+    }
+}
+
+export const RemoveTrainerSpecialization = async(trainerId, skillId) => {
+    try {
+        const requestOptionsHead = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify({trainer_id: trainerId, skill_id: skillId}),
+        };
+        const response = await fetch(`${rte}remove_specialization`, requestOptionsHead);
+        return responseFormat(response, false);
+    } catch (e) {
+        return errorFormat(e);
+    }
+}
+
