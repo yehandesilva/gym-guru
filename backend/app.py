@@ -910,6 +910,38 @@ def get_members():
         return make_response(jsonify({'error_message': str(e)}), 500)
 
 
+"""
+Returns all specializations for a particular trainer.
+"""
+@app.route('/trainer_specializations', methods=['POST'])
+@cross_origin()
+def get_trainer_specializations():
+    print("[LOG] Received request to get all specializations associated with trainer")
+    # Use RealDictCursor to return data as dictionary format
+    cursor = db_conn.cursor(cursor_factory=RealDictCursor)
+    try:
+        # Get JSON data from received request
+        trainer = json.loads(request.data)
+        # Get info on all interests that member has
+        cursor.execute(
+            "SELECT name FROM specialization JOIN skill ON specialization.skill_id = skill.skill_id WHERE trainer_id = %s",
+            (trainer['trainer_id'],))
+        specialization_names = cursor.fetchall()
+        print(f"[QUERY] Specializations for trainer: {specialization_names}")
+
+        json_data = json.dumps(specialization_names)
+        print(f"[LOG] Specializations converted to JSON str: {json_data}")
+        # Return Response with JSON data
+        return jsonify(json_data)
+
+    except (PostgresError, Exception) as e:
+        print(f"[EXCEPTION] {e}")
+        # Reset transaction state
+        db_conn.rollback()
+        # Return response containing thrown exception and status code of INTERNAL SERVER ERROR
+        return make_response(jsonify({'error_message': str(e)}), 500)
+
+
 # Main method
 if __name__ == '__main__':
     # Run backend server on port 5000 (React app is running on 3000)
