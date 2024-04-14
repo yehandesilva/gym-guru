@@ -71,6 +71,7 @@ const PersonalInformation = ({user, setUser, update}) => {
         }
         if (update) {
             memberData.member_id = user.member_id;
+            memberData.type = 'member';
             const res = await UpdateMember(memberData);
             if (res.ok) {
                 toast.current.show({ severity: 'info', summary: 'Success', detail: 'Updated personal information', life: 3000 });
