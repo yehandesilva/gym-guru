@@ -302,7 +302,7 @@ def delete_interest():
         interest = json.loads(request.data)
         print("[LOG] Received request to delete interest for member")
 
-        # Update the member's personal info
+        # Delete interest from member
         cursor.execute("DELETE FROM interest WHERE (member_id = %s AND skill_id = %s)",
                        (interest['member_id'], interest['skill_id']))
         # Commit changes
@@ -944,7 +944,7 @@ Adds a specialization for a trainer.
 """
 @app.route('/add_specialization', methods=['POST'])
 @cross_origin()
-def add_interest():
+def add_specialization():
     cursor = db_conn.cursor()
     try:
         # Get JSON data from received request
@@ -954,6 +954,31 @@ def add_interest():
         # Insert new specialization for trainer
         cursor.execute("INSERT INTO specialization (trainer_id, skill_id) VALUES (%s, %s)",
                        (specialization['trainer_id'], specialization['skill_id']))
+        # Commit changes
+        db_conn.commit()
+        # Return OK response
+        return Response(status=200)
+
+    except (PostgresError, psycopg2.IntegrityError, Exception) as e:
+        print(f"[EXCEPTION] {e}")
+        # Reset transaction state
+        db_conn.rollback()
+        # Return response containing thrown error and status code of INTERNAL SERVER ERROR
+        return make_response(jsonify({'error_message': str(e)}), 500)
+
+
+@app.route('/remove_specialization', methods=['POST'])
+@cross_origin()
+def remove_specialization():
+    cursor = db_conn.cursor()
+    try:
+        # Get JSON data from received request
+        interest = json.loads(request.data)
+        print("[LOG] Received request to delete interest for member")
+
+        # Delete specialization for trainer
+        cursor.execute("DELETE FROM specialization WHERE (trainer_id = %s AND skill_id = %s)",
+                       (interest['trainer_id'], interest['skill_id']))
         # Commit changes
         db_conn.commit()
         # Return OK response
