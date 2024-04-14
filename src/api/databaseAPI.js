@@ -355,3 +355,26 @@ export const RemoveTrainerAvailability = async(trainerId, day) => {
         return errorFormat(e);
     }
 }
+
+export const SearchSpecifiedMembers = async(firstName, lastName) => {
+    if (!firstName) {
+        firstName = "";
+        lastName = "";
+    }
+    if (!lastName) {
+        firstName = "";
+        lastName = "";
+    }
+    try {
+        const requestOptionsHead = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify({first_name: firstName, last_name: lastName}),
+        };
+        const response = await fetch(`${rte}get_members`, requestOptionsHead);
+        return responseFormat(response, true);
+    } catch (e) {
+        return errorFormat(e);
+    }
+}
+

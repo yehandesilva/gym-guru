@@ -16,6 +16,7 @@ import Classes from "./member/classes";
 import Sessions from "./member/sessions";
 import TrainerHome from "./trainer/trainerHome";
 import TrainerSessions from "./trainer/trainerSessions";
+import SearchMembers from "./trainer/searchMembers";
 
 function App() {
 
@@ -42,6 +43,7 @@ function App() {
                         :
                         <Routes>
                             <Route path="/" element={<TrainerHome user={user} setUser={setUser}/>} />
+                            <Route path="/searchMembers" element={<SearchMembers user={user} setUser={setUser}/>} />
                             <Route path="/trainerSessions" element={<TrainerSessions user={user} setUser={setUser}/>} />
                             <Route path="*" element={<Navigate replace to="/" />} />
                         </Routes>
