@@ -857,7 +857,7 @@ def remove_availability():
         trainer = json.loads(request.data)
         # Insert new availability for trainer
         cursor.execute("DELETE FROM availability WHERE (trainer_id = %s AND day = %s)",
-                       (trainer['trainer_id'], trainer['day']))
+                       (trainer['trainer_id'], trainer['day'],))
         # Commit changes
         db_conn.commit()
         # Return OK response
