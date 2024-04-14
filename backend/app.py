@@ -272,12 +272,9 @@ def add_interest():
     try:
         # Get JSON data from received request
         interest = json.loads(request.data)
-        print(interest)
-        print(interest['member_id'])
-        print(interest['skill_id'])
         print("[LOG] Received request to add new interest for member")
 
-        # Update the member's personal info
+        # Insert new interest for member
         cursor.execute("INSERT INTO interest (member_id, skill_id) VALUES (%s, %s)",
                        (interest['member_id'], interest['skill_id']))
         # Commit changes
@@ -922,7 +919,7 @@ def get_trainer_specializations():
     try:
         # Get JSON data from received request
         trainer = json.loads(request.data)
-        # Get info on all interests that member has
+        # Get info on all specializations that trainer has
         cursor.execute(
             "SELECT name FROM specialization JOIN skill ON specialization.skill_id = skill.skill_id WHERE trainer_id = %s",
             (trainer['trainer_id'],))
@@ -939,6 +936,34 @@ def get_trainer_specializations():
         # Reset transaction state
         db_conn.rollback()
         # Return response containing thrown exception and status code of INTERNAL SERVER ERROR
+        return make_response(jsonify({'error_message': str(e)}), 500)
+
+
+"""
+Adds a specialization for a trainer.
+"""
+@app.route('/add_specialization', methods=['POST'])
+@cross_origin()
+def add_interest():
+    cursor = db_conn.cursor()
+    try:
+        # Get JSON data from received request
+        specialization = json.loads(request.data)
+        print("[LOG] Received request to add new interest for member")
+
+        # Insert new specialization for trainer
+        cursor.execute("INSERT INTO specialization (trainer_id, skill_id) VALUES (%s, %s)",
+                       (specialization['trainer_id'], specialization['skill_id']))
+        # Commit changes
+        db_conn.commit()
+        # Return OK response
+        return Response(status=200)
+
+    except (PostgresError, psycopg2.IntegrityError, Exception) as e:
+        print(f"[EXCEPTION] {e}")
+        # Reset transaction state
+        db_conn.rollback()
+        # Return response containing thrown error and status code of INTERNAL SERVER ERROR
         return make_response(jsonify({'error_message': str(e)}), 500)
 
 
