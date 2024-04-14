@@ -27,14 +27,14 @@ const Session = ({sessionVal, setModified, type="member"}) => {
         <>
             <div className="grid w-full flex flex-wrap justify-content-center">
                 <ul className="col-8 flex list-none p-0 m-0 p-1 w-8 surface-0 border-primary border-1">
-                    <li className={`flex-column px-2 col-${(type === "user")? "3" : "4"}`}> {/* Adjusted column width */}
+                    <li className={`flex-column px-2 col-${(type === "member")? "3" : "4"}`}> {/* Adjusted column width */}
                         <div className="text-500 w-full font-medium">Day</div>
                         <div className="text-900 w-full mt-2 ">
                             {session.day}
                         </div>
                     </li>
                     <li className={`flex-column px-2 col-${(type === "user")? "3" : "4"}`}> {/* Adjusted column width */}
-                        <div className="text-500 w-full font-medium">{(type === "user")? "Trainer" : "Member"}</div>
+                        <div className="text-500 w-full font-medium">{(type === "member")? "Trainer" : "Member"}</div>
                         <div className="text-900 w-full mt-2 ">
                             {session.first_name + " " + session.last_name}
                         </div>
@@ -51,7 +51,7 @@ const Session = ({sessionVal, setModified, type="member"}) => {
                             null
                     }
 
-                    <li className={`flex-column px-2 align-content-center col-${(type === "user")? "3" : "4"}`}> {/* Adjusted column width */}
+                    <li className={`flex-column px-2 align-content-center col-${(type === "member")? "3" : "4"}`}> {/* Adjusted column width */}
                         <Button className='border-round-2xl border-red-400 text-900 font-bold' label="Cancel Session"
                                 outlined
                                 icon="pi pi-minus" onClick={() => cancelSession()}/>

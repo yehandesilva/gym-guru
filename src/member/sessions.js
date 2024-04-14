@@ -33,7 +33,7 @@ const Sessions = ({user, setUser}) => {
                 {
                     (sessions.map((session) => {
                         return (
-                            <Session sessionVal={session} setModified={setModified} />
+                            <Session sessionVal={session} setModified={setModified} type={"member"}/>
                         )
                     }))
                 }
