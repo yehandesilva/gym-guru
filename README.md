@@ -8,6 +8,9 @@ This project simulates a Health and Fitness app with member and trainer function
 🏅 Yehan De Silva, 101185388<br>
 🏅 Pathum Danthanarayana, 101181411<br>
 
+## Demonstration Video (Youtube)
+https://youtu.be/fCZc0yH0v7Q
+
 ## How to Run Project
 1. Create Database in pgAdmin 4 using the following credentials:
 ```
