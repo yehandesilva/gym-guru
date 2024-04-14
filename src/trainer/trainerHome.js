@@ -14,7 +14,7 @@ const TrainerHome = ({user, setUser}) => {
         {
             name: "Members",
             icon: "pi pi-flag-fill",
-            link: "members"
+            link: "searchMembers"
         },
         {
             name: "Sessions",

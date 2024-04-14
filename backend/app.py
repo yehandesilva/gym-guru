@@ -856,7 +856,7 @@ def remove_availability():
         # Get JSON data from received request
         trainer = json.loads(request.data)
         # Insert new availability for trainer
-        cursor.execute("DELETE FROM availability WHERE (trainer_id = %s AND availability = %s)",
+        cursor.execute("DELETE FROM availability WHERE (trainer_id = %s AND day = %s)",
                        (trainer['trainer_id'], trainer['day'],))
         # Commit changes
         db_conn.commit()
@@ -888,7 +888,7 @@ def get_members():
         if member['first_name'] != '' and member['last_name'] != '':
             # If so, return all members (hide payment related info) matching the first name and last name
             cursor.execute("SELECT member_id, first_name, last_name, email, date_of_birth, height, weight"
-                           " FROM member WHERE (first_name = %s AND last_name = %s",
+                           " FROM member WHERE (first_name = %s AND last_name = %s)",
                            (member['first_name'], member['last_name']))
         else:
             # Otherwise, return all members (hide payment related info)
